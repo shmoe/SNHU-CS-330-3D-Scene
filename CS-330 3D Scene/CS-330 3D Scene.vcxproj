@@ -153,7 +153,6 @@
   <ItemGroup>
     <ClInclude Include="events.h" />
     <ClInclude Include="main.h" />
-    <ClInclude Include="mesh.h" />
     <ClInclude Include="models.h" />
     <ClInclude Include="shader.h" />
     <ClInclude Include="stb_image.h" />
