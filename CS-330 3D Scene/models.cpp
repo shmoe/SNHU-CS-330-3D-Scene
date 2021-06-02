@@ -102,22 +102,45 @@ Model get_desk_model(const char* texture_path) {
 	plane.model = plane_model;																		// Assign model to Model
 
 	/**
-	 * set up texture
+	 * Set up texture
 	 */
 	unsigned int plane_texture = load_wrap_texture(texture_path);									// Generate texture with wrapping attributes
 
 	glob::universal_shader->use();																	// Bind universal shader to context
-	glob::universal_shader->setInt("texture", 0);													// Tell shader where to find texture (TODO find out if value of "0" works with multiple textures loaded)
+	glob::universal_shader->setInt("texture", glob::number_of_textures++);							// Tell shader where to find texture
 
-	plane.texture = plane_texture;
+	plane.texture_offset = glob::number_of_textures - 1;											// Assign offset from GL_TEXTURE0 texture unit
+	plane.texture = plane_texture;																	// Assing handle to texture
 
 	return plane;
 }
 
+
+Model get_switch_model(const char* texture_path) {
+	Model console;
+
+	// TODO
+
+	/**
+	 * Set up texture
+	 */
+	unsigned int model_texture = load_wrap_texture(texture_path);				// Generate texture with wrapping attributes (ideally it will be a web and should not repeat)
+
+	glob::universal_shader->use();												// Bind universal shader to context
+	glob::universal_shader->setInt("texture", glob::number_of_textures++);		// Tell shader where to find texture
+
+	console.texture_offset = glob::number_of_textures - 1;						// Assign offset from GL_TEXTURE0 texture unit
+	console.texture = model_texture;												// Assing handle to texture
+
+	return console;
+}
+
+
+
 void draw_model(Model model, glm::mat4 projection, glm::mat4 view) {
 	using namespace glob;
 
-	glActiveTexture(GL_TEXTURE0);	//TODO see if this works with multiple textures loaded, see other TODO
+	glActiveTexture(GL_TEXTURE0 + model.texture_offset);
 	glBindTexture(GL_TEXTURE_2D, model.texture);
 
 	universal_shader->use();
