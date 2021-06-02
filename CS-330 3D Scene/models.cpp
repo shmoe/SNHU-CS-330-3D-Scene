@@ -17,7 +17,7 @@ void models_init() {
 unsigned int load_wrap_texture(const char* texture_path) {
 	unsigned int texture;
 
-	glGenTextures(1, &texture);																// Generate texture and set texture1 to new texture's ID number
+	glGenTextures(1, &texture);																	// Generate texture and set texture1 to new texture's ID number
 	glBindTexture(GL_TEXTURE_2D, texture);														// Bind texture1 to the context as a GL_TEXTURE_2D
 
 	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);								// Set wrapping parameters for bound texture (texture1)
@@ -27,7 +27,7 @@ unsigned int load_wrap_texture(const char* texture_path) {
 
 	int width, height, nrChannels;
 	stbi_set_flip_vertically_on_load(true);														// Tell stb_image.h to flip image on y-axis (because of XY -> rowcol shenanigans)
-	unsigned char* img_data = stbi_load(texture_path, &width, &height, &nrChannels, 0);	// Load raw image data to img_data and populate width, height and nrChannels
+	unsigned char* img_data = stbi_load(texture_path, &width, &height, &nrChannels, 0);			// Load raw image data to img_data and populate width, height and nrChannels
 	if (img_data)
 	{
 		glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB, width, height, 0, GL_RGB, GL_UNSIGNED_BYTE, img_data);
@@ -131,59 +131,59 @@ Model get_switch_model(const char* texture_path) {
 	const float console_vertices[] = {
 		// front face
 		-0.5f, 0.5882f, 1.0f,		front_face_offset, front_face_height,	// Front top left
-		0.5f, 0.5882f, 1.0f,		1.f, front_face_height, 	// Front top right
-		0.5f, -0.5882f, 1.0f,		1.f, 0.0f,	// Front bottom left
-		0.5f, -0.5882f, 1.0f,		1.f, 0.0f,	// Front bottom left
+		0.5f, 0.5882f, 1.0f,		1.f, front_face_height, 				// Front top right
+		0.5f, -0.5882f, 1.0f,		1.f, 0.0f,								// Front bottom left
+		0.5f, -0.5882f, 1.0f,		1.f, 0.0f,								// Front bottom left
 		-0.5f, 0.5882f, 1.0f,		front_face_offset, front_face_height,	// Front top right
-		-0.5f, -0.5882f, 1.0f,		front_face_offset, 0.f,	// Front bottom right
+		-0.5f, -0.5882f, 1.0f,		front_face_offset, 0.f,					// Front bottom right
 
 		// right face
-		0.5f, 0.5882f, 1.0f,		front_face_offset, 1.f, // Front top right
-		0.5f, 0.5882f, 0.93f,		0.f, 1.f, // Back top right
-		0.5f, -0.5882f, 1.0f,		0.0f, 0.0f,	// Front bottom left
-		0.5f, -0.5882f, 1.0f,		0.0f, 0.0f,	// Front bottom left
-		0.5f, 0.5882f, 0.93f,		0.0f, 1.f,	// Back top right
-		0.5f, -0.5882f, 0.93f,		front_face_offset, 0.0f,	// Back bottom left
+		0.5f, 0.5882f, 1.0f,		front_face_offset, 1.f,					// Front top right
+		0.5f, 0.5882f, 0.93f,		0.f, 1.f,								// Back top right
+		0.5f, -0.5882f, 1.0f,		0.0f, 0.0f,								// Front bottom left
+		0.5f, -0.5882f, 1.0f,		0.0f, 0.0f,								// Front bottom left
+		0.5f, 0.5882f, 0.93f,		0.0f, 1.f,								// Back top right
+		0.5f, -0.5882f, 0.93f,		front_face_offset, 0.0f,				// Back bottom left
 
 		// back face
-		-0.5f, 0.5882f, 0.93f,		front_face_offset, 1.f, 	// Back top left
-		0.5f, 0.5882f, 0.93f,		0.f, 1.0f, 	// Back top right
-		-0.5f, -0.5882f, 0.93f,		0.0f, 0.0f, // Back bottom right
-		-0.5f, -0.5882f, 0.93f,		0.0f, 0.0f,	// Back bottom right
-		0.5f, 0.5882f, 0.93f,		0.0f, 1.0f,	// Back top right
-		0.5f, -0.5882f, 0.93f,		front_face_offset, 0.0f,	// Back bottom left
+		-0.5f, 0.5882f, 0.93f,		front_face_offset, 1.f, 				// Back top left
+		0.5f, 0.5882f, 0.93f,		0.f, 1.0f, 								// Back top right
+		-0.5f, -0.5882f, 0.93f,		0.0f, 0.0f,								// Back bottom right
+		-0.5f, -0.5882f, 0.93f,		0.0f, 0.0f,								// Back bottom right
+		0.5f, 0.5882f, 0.93f,		0.0f, 1.0f,								// Back top right
+		0.5f, -0.5882f, 0.93f,		front_face_offset, 0.0f,				// Back bottom left
 
 		// left face
-		-0.5f, 0.5882f, 1.0f,		front_face_offset, 1.f,	// Front top left
-		-0.5f, 0.5882f, 0.93f,		0.0f, 1.0f,	// Back top left
-		-0.5f, -0.5882f, 0.93f,		0.0f, 0.0f,	// Back bottom right
-		-0.5f, -0.5882f, 0.93f,		0.0f, 0.0f,	// Back bottom right
-		-0.5f, 0.5882f, 1.0f,		0.0f, 1.0f, 	// Front top left
-		-0.5f, -0.5882f, 1.0f,		front_face_offset, 0.0f,	// Front bottom right
+		-0.5f, 0.5882f, 1.0f,		front_face_offset, 1.f,					// Front top left
+		-0.5f, 0.5882f, 0.93f,		0.0f, 1.0f,								// Back top left
+		-0.5f, -0.5882f, 0.93f,		0.0f, 0.0f,								// Back bottom right
+		-0.5f, -0.5882f, 0.93f,		0.0f, 0.0f,								// Back bottom right
+		-0.5f, 0.5882f, 1.0f,		0.0f, 1.0f,							 	// Front top left
+		-0.5f, -0.5882f, 1.0f,		front_face_offset, 0.0f,				// Front bottom right
 
 		// bottom face
-		-0.5f, -0.5882f, 1.0f,		front_face_offset, 1.f,	// Front bottom right
-		0.5f, -0.5882f, 1.0f,		0.0f, 1.0f, 	// Front bottom left
-		-0.5f, -0.5882f, 0.93f,		0.0f, 0.0f, 	// Back bottom right
-		-0.5f, -0.5882f, 0.93f,		0.0f, 0.0f, 	// Back bottom right
-		0.5f, -0.5882f, 1.0f,		0.0f, 1.0f,	// Front bottom left
-		0.5f, -0.5882f, 0.93f,		front_face_offset, 0.0f,	// Back bottom left
+		-0.5f, -0.5882f, 1.0f,		front_face_offset, 1.f,					// Front bottom right
+		0.5f, -0.5882f, 1.0f,		0.0f, 1.0f,								// Front bottom left
+		-0.5f, -0.5882f, 0.93f,		0.0f, 0.0f,								// Back bottom right
+		-0.5f, -0.5882f, 0.93f,		0.0f, 0.0f,								// Back bottom right
+		0.5f, -0.5882f, 1.0f,		0.0f, 1.0f,								// Front bottom left
+		0.5f, -0.5882f, 0.93f,		front_face_offset, 0.0f,				// Back bottom left
 
 		// top face
-		-0.5f, 0.5882f, 1.0f,		front_face_offset, 1.f,	// Front top left
-		-0.5f, 0.5882f, 0.93f,		0.0f, 1.0f,	// Back top left
-		0.5f, 0.5882f, 0.93f,		0.0f, 0.0f,	// Back top right
-		0.5f, 0.5882f, 0.93f,		0.0f, 0.0f,	// Back top right
-		-0.5f, 0.5882f, 1.0f,		0.0f, 1.0f,	// Front top left
-		0.5f, 0.5882f, 1.0f,		front_face_offset, 0.0f,	// Front top right
+		-0.5f, 0.5882f, 1.0f,		front_face_offset, 1.f,					// Front top left
+		-0.5f, 0.5882f, 0.93f,		0.0f, 1.0f,								// Back top left
+		0.5f, 0.5882f, 0.93f,		0.0f, 0.0f,								// Back top right
+		0.5f, 0.5882f, 0.93f,		0.0f, 0.0f,								// Back top right
+		-0.5f, 0.5882f, 1.0f,		0.0f, 1.0f,								// Front top left
+		0.5f, 0.5882f, 1.0f,		front_face_offset, 0.0f,				// Front top right
 
 		// stand
-		-0.5f + (14.0f / 17.0f), -0.5882f + (6.0f / 10.0f), 0.93f,	front_face_offset, 1.f,	// Stand top left
-		-0.5f + (16.0f / 17.0f), -0.5882f + (6.0f / 10.0f), 0.93f,	0.0f, 1.0f,		// Stand top right
-		-0.5f + (14.0f / 17.0f), -0.5f, 0.70f,						0.0f, 0.0f,		// Stand bottom left
-		-0.5f + (14.0f / 17.0f), -0.5f, 0.70f,						0.0f, 0.0f,		// Stand bottom left
-		-0.5f + (16.0f / 17.0f), -0.5882f + (6.0f / 10.0f), 0.93f,	0.0f, 1.0f,		// Stand top right
-		-0.5f + (16.0f / 17.0f), -0.5f, 0.70f,						front_face_offset, 0.0f	// Stand bottom right
+		-0.5f + (14.0f / 17.0f), -0.5882f + (6.0f / 10.0f), 0.93f,	front_face_offset, 1.f,		// Stand top left
+		-0.5f + (16.0f / 17.0f), -0.5882f + (6.0f / 10.0f), 0.93f,	0.0f, 1.0f,					// Stand top right
+		-0.5f + (14.0f / 17.0f), -0.5f, 0.70f,						0.0f, 0.0f,					// Stand bottom left
+		-0.5f + (14.0f / 17.0f), -0.5f, 0.70f,						0.0f, 0.0f,					// Stand bottom left
+		-0.5f + (16.0f / 17.0f), -0.5882f + (6.0f / 10.0f), 0.93f,	0.0f, 1.0f,					// Stand top right
+		-0.5f + (16.0f / 17.0f), -0.5f, 0.70f,						front_face_offset, 0.0f		// Stand bottom right
 	};
 
 	const int floats_per_vertex = 3;
@@ -238,7 +238,7 @@ Model get_switch_model(const char* texture_path) {
 	glob::universal_shader->setInt("texture", glob::number_of_textures++);		// Tell shader where to find texture
 
 	console.texture_offset = glob::number_of_textures - 1;						// Assign offset from GL_TEXTURE0 texture unit
-	console.texture = console_texture;												// Assing handle to texture
+	console.texture = console_texture;											// Assing handle to texture
 
 	return console;
 }
