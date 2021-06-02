@@ -148,18 +148,24 @@
     <ClCompile Include="events.cpp" />
     <ClCompile Include="glad.c" />
     <ClCompile Include="main.cpp" />
+    <ClCompile Include="models.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="events.h" />
     <ClInclude Include="main.h" />
     <ClInclude Include="mesh.h" />
+    <ClInclude Include="models.h" />
     <ClInclude Include="shader.h" />
+    <ClInclude Include="stb_image.h" />
   </ItemGroup>
   <ItemGroup>
     <None Include="OpenGL-GLFW-GLAD-glm-Headers.props" />
     <None Include="OpenGL-GLFW-GLAD-glm-Win32.props" />
     <None Include="shaders\single_texture.fs.glsl" />
     <None Include="shaders\single_texture.vs.glsl" />
+  </ItemGroup>
+  <ItemGroup>
+    <Image Include="data\wood.jpg" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

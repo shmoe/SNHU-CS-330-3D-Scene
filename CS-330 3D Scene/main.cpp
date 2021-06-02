@@ -26,9 +26,9 @@
 #include "events.h"
 
 /**
- * Contains the "mesh" class from OpenGLSample
+ * Contains the "Model" class
  */
-#include "mesh.h"
+#include "models.h"
 
 /**
 * All global variables (primarily for the camera)
@@ -119,6 +119,11 @@ int main(int argc, char* argv[]) {
 	 * Tell GLFW to capture mouse.
 	 */
 	glfwSetInputMode(window, GLFW_CURSOR, GLFW_CURSOR_DISABLED);
+
+	/**
+	 * Generate universal (single texture, MVP) shader after OpenGL and GLFW are intialized.
+	 */
+	models_init();
 
 	/**
 	 * Generate a shader program using the following vertext and fragment shaders.
@@ -222,59 +227,11 @@ int main(int argc, char* argv[]) {
 	switch_model = glm::rotate(switch_model, glm::radians(-10.0f), glm::vec3(1.0f, 0.0f, 0.0f));	// Rotate model 33 deg about X axis.s
 	switch_model = glm::scale(switch_model, glm::vec3(0.5f, 0.25f, 0.5f));							// Scale model to half size.
 
-	/** ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~																		Define Plane mesh																			~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ **/
-	const float plane_vertices[] = {
-		-1.0f, 0.0f, -1.0f,		118.f / 255.f, 80.f / 255.f, 60.f / 255.f,	// Back left, brown
-		-1.0f, 0.0f, 1.0f,		118.f / 255.f, 80.f / 255.f, 60.f / 255.f,	// Front left, brown
-		1.0f, 0.0f, -1.0f,		118.f / 255.f, 80.f / 255.f, 60.f / 255.f,	// Back right, brown
-		1.0f, 0.0f, 1.0f,		118.f / 255.f, 80.f / 255.f, 60.f / 255.f	// Front right, brown
-	};
-
-	const unsigned int plane_indices[] = {
-		0, 1, 2, 2, 1, 3							// Plane
-	};
-
-	unsigned int plane_VAO, plane_VBO, plane_EBO;
-
-	glGenVertexArrays(1, &plane_VAO);					// Generate a VAO and set plane_VAO to the new VAO's ID number
-	glGenBuffers(1, &plane_VBO);						// Generate a VBO and set plane_VBO to the new VBO's ID number
-	glGenBuffers(1, &plane_EBO);						// Generate a EBO and set plane_EBO to the new EBO's ID number
-
-	glBindVertexArray(plane_VAO);						// Bind the VAO to the context, which saves the following function calls.
-
-	glBindBuffer(GL_ARRAY_BUFFER, plane_VBO);			// Bind the VBO to the context (and by extension the currently bound VAO).
-	glBufferData(GL_ARRAY_BUFFER,
-		sizeof(plane_vertices),
-		plane_vertices,
-		GL_STATIC_DRAW);								// Copy the data from vertices to the VBO.
-
-	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, plane_EBO);	// Bind the EBO to the context (and by extension the currently bound VAO).
-	glBufferData(GL_ELEMENT_ARRAY_BUFFER,
-		sizeof(plane_indices),
-		plane_indices,
-		GL_STATIC_DRAW);								// Copy the data from indices to the EBO.
-
-	glVertexAttribPointer(0, floats_per_vertex,
-		GL_FLOAT, GL_FALSE,
-		stride * sizeof(float), (void*)0);				// Tells the context (and by extension the VAO) how to read the first attribute of the vertex buffer.
-	glEnableVertexAttribArray(0);						// Enable the above vertex attribute array.
-
-	glVertexAttribPointer(1, floats_per_color,
-		GL_FLOAT, GL_FALSE,
-		stride * sizeof(float),
-		(void*)(sizeof(float) * 3));					// Tells the context (and by extension the VAO) how to read the second attribute of the vertex buffer.
-	glEnableVertexAttribArray(1);						// Enable the above vertex attribute array.
-
-	glBindVertexArray(0);								// Unbind the VAO from the context.
-
 	/**
-	 * Define plane model matrix.
+	 * Create models
 	 */
-	glm::mat4 plane_model = glm::mat4(1.0f);														// Initially set as identity matrix.
-	plane_model = glm::translate(plane_model, glm::vec3(0.0f, -0.065f, 0.0f));						// Center model
-	//plane_model = glm::rotate(plane_model, glm::radians(-10.0f), glm::vec3(1.0f, 0.0f, 0.0f));	// Rotate model
-	plane_model = glm::scale(plane_model, glm::vec3(2.0f, 1.0f, 1.0f));								// Scale model
-
+	Model desk = get_desk_model("data/wood.jpg");
+	
 	/**
 	 * Main rendering loop
 	 */
@@ -352,29 +309,9 @@ int main(int argc, char* argv[]) {
 			0);													// Start reading EBO at the beginning.
 
 		/**
-		 * Start using this shader and VAO for subsequent draws.
+		 * Draw models
 		 */
-		//glUseProgram(shader_program);		// Set shader for following draws
-		glBindVertexArray(plane_VAO);		// Set vertex array object for following draws
-
-		/**
-		 * Pass projection, view and model matrices to pass to shader.
-		 */
-		//glUniformMatrix4fv(glGetUniformLocation(shader_program, "projection"), 1, GL_FALSE, &projection[0][0]);							// Pass the same projection matrix to shader
-
-		//glUniformMatrix4fv(glGetUniformLocation(shader_program, "view"), 1, GL_FALSE, &view[0][0]);										// Pass the same view matrix to shader
-
-		/* Transforms to model matrix go here */
-		glUniformMatrix4fv(glGetUniformLocation(shader_program, "model"), 1, GL_FALSE, &plane_model[0][0]);									// Pass model matrix to shader
-
-
-		/**
-		 * Draw the VBO in order of the indices held by the EBO.
-		 */
-		glDrawElements(GL_TRIANGLES,							// Draw as triangles
-			sizeof(plane_indices) / sizeof(unsigned int),		// Draw all indices in EBO
-			GL_UNSIGNED_INT,									// Type of indices held by EBO
-			0);
+		draw_model(desk, projection, view);
 
 
 		glfwSwapBuffers(window);		// Swaps front and back framebuffers (output to screen)
