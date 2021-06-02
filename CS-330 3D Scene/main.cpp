@@ -126,111 +126,10 @@ int main(int argc, char* argv[]) {
 	models_init();
 
 	/**
-	 * Generate a shader program using the following vertext and fragment shaders.
-	 */
-	const char* vertex_shader = "#version 330 core\n"											// Set OpenGL version (3.3) and profile (core).
-		"layout (location = 0) in vec3 aPos;\n"													// Define the input parameter (the current vertex coordinate) and its index.
-		"layout (location = 1) in vec3 VBOColor;\n"
-		"out vec3 vertexColor;\n"																// Define the output parameter (taken by the fragment shader to color the fragment).
-		"uniform mat4 model;\n"																	// Model matrix (uniform input)
-		"uniform mat4 view;\n"																	// View matrix (uniform input)
-		"uniform mat4 projection;\n"															// Projection matrix (uniform input)
-		"void main()\n"
-		"{\n"
-		"   gl_Position = projection * view * model * vec4(aPos.x, aPos.y, aPos.z, 1.0);\n"		// Map the input vec3 to a vec4 and set it to gl_Position. 
-		"	vertexColor = VBOColor;\n"
-		"}\0";
-
-	const char* fragment_shader = "#version 330 core\n"								// Set OpenGL version (3.3) and profile (core).
-		"in vec3 vertexColor;\n"													// Define the input (position of the point being drawn)
-		"out vec4 FragColor;\n"														// Define the output (the color for the current pixel).
-		"void main()\n"
-		"{\n"
-		"   FragColor = vec4(vertexColor.x, vertexColor.y, vertexColor.z, 1.0f);\n" // Map the input vec3 to vec4 and set to FragColor
-		"}\n\0";
-
-	unsigned int shader_program = gen_shader_program(vertex_shader, fragment_shader);
-
-	const int floats_per_vertex = 3;
-	const int floats_per_color = 3;
-	const int stride = floats_per_vertex + floats_per_vertex;
-
-	/** ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~																		Define Switch model																			~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ **/
-	/**
-	 * Generate a Vertex Array Object using the following vertices and indices.
-	 */
-	const float switch_vertices[] = {
-		-0.5f, 0.5882f, 1.0f,		1.0f, 0.0f, 0.0f,	// Front top left
-		0.5f, 0.5882f, 1.0f,		0.0f, 1.0f, 0.0f,	// Front top right
-		-0.5f, -0.5882f, 1.0f,		0.0f, 0.0f, 1.0f,	// Front bottom right
-		0.5f, -0.5882f, 1.0f,		1.0f, 0.0f, 0.0f,	// Front bottom left
-
-		-0.5f, 0.5882f, 0.93f,		1.0f, 1.0f, 0.0f,	// Back top left
-		0.5f, 0.5882f, 0.93f,		1.0f, 0.0f, 1.0f,	// Back top right
-		-0.5f, -0.5882f, 0.93f,		0.0f, 1.0f, 1.0f,	// Back bottom right
-		0.5f, -0.5882f, 0.93f,		1.0f, 1.0f, 0.0f,	// Back bottom left
-
-		-0.5f + (14.0f / 17.0f), -0.5882f + (6.0f / 10.0f), 0.93f,	0.0f, 1.0f, 1.0f,		// Stand top left
-		-0.5f + (16.0f / 17.0f), -0.5882f + (6.0f / 10.0f), 0.93f,	0.0f, 1.0f, 1.0f,		// Stand top right
-		-0.5f + (14.0f / 17.0f), -0.5f, 0.70f,						0.0f, 1.0f, 1.0f,		// Stand bottom left
-		-0.5f + (16.0f / 17.0f), -0.5f, 0.70f,						0.0f, 1.0f, 1.0f		// Stand bottom right
-	};								// Vertices that make up our Switch body. Bound to the VBO
-
-	const unsigned int switch_indices[] = {
-		0, 1, 2, 2, 1, 3,		// front face
-		1, 5, 3, 3, 5, 7,		// right face
-		4, 5, 6, 6, 5, 7,		// back face
-		0, 4, 6, 6, 0, 2,		// left face
-		2, 3, 6, 6, 3, 7,		// bottom face
-		0, 4, 5, 5, 0, 1,		// top face
-
-		8, 9, 10, 10, 9, 11		// stand
-	};								// Order by which to draw our vertices. Bound to the EBO
-
-	unsigned int switch_VAO, switch_VBO, switch_EBO;
-	glGenVertexArrays(1, &switch_VAO);					// Generate a VAO and set switch_VAO to the new VAO's ID number
-	glGenBuffers(1, &switch_VBO);						// Generate a VBO and set switch_VBO to the new VBO's ID number
-	glGenBuffers(1, &switch_EBO);						// Generate a EBO and set switch_EBO to the new EBO's ID number
-
-	glBindVertexArray(switch_VAO);						// Bind the VAO to the context, which saves the following function calls.
-
-	glBindBuffer(GL_ARRAY_BUFFER, switch_VBO);			// Bind the VBO to the context (and by extension the currently bound VAO).
-	glBufferData(GL_ARRAY_BUFFER,
-		sizeof(switch_vertices),
-		switch_vertices,
-		GL_STATIC_DRAW);								// Copy the data from vertices to the VBO.
-
-	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, switch_EBO);	// Bind the EBO to the context (and by extension the currently bound VAO).
-	glBufferData(GL_ELEMENT_ARRAY_BUFFER,
-		sizeof(switch_indices),
-		switch_indices,
-		GL_STATIC_DRAW);								// Copy the data from indices to the EBO.
-
-	glVertexAttribPointer(0, floats_per_vertex,
-		GL_FLOAT, GL_FALSE,
-		stride * sizeof(float), (void*)0);				// Tells the context (and by extension the VAO) how to read the first attribute of the vertex buffer.
-	glEnableVertexAttribArray(0);						// Enable the above vertex attribute array.
-
-	glVertexAttribPointer(1, floats_per_color,
-		GL_FLOAT, GL_FALSE,
-		stride * sizeof(float),
-		(void*)(sizeof(float) * 3));					// Tells the context (and by extension the VAO) how to read the second attribute of the vertex buffer.
-	glEnableVertexAttribArray(1);						// Enable the above vertex attribute array.
-
-	glBindVertexArray(0);								// Unbind the VAO from the context.
-
-	/**
-	 * Define switch model matrix.
-	 */
-	glm::mat4 switch_model = glm::mat4(1.0f);														// Initially set as identity matrix.
-	switch_model = glm::translate(switch_model, glm::vec3(0.0f, 0.0f, -0.15f));						// Center model
-	switch_model = glm::rotate(switch_model, glm::radians(-10.0f), glm::vec3(1.0f, 0.0f, 0.0f));	// Rotate model 33 deg about X axis.s
-	switch_model = glm::scale(switch_model, glm::vec3(0.5f, 0.25f, 0.5f));							// Scale model to half size.
-
-	/**
 	 * Create models
 	 */
 	Model desk = get_desk_model("data/wood.jpg");
+	Model console = get_switch_model("data/switch.jpg");
 	
 	/**
 	 * Main rendering loop
@@ -249,13 +148,6 @@ int main(int argc, char* argv[]) {
 		 * Clear color and depth buffers before rendering.
 		 */
 		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-
-		/**
-		 * Start using this shader and VAO for subsequent draws.
-		 */
-		glUseProgram(shader_program);			// Set shader for following draws
-		glBindVertexArray(switch_VAO);			// Set vertex array object for following draws
-
 
 		/**
 		 * Create projection, view and model matrices to pass to shader.
@@ -284,13 +176,7 @@ int main(int argc, char* argv[]) {
 			projection = glm::perspective(glm::radians(glob::fov), aspect_ratio, 0.1f, 100.f);														// Create perspective projection matrix
 		}
 
-		glUniformMatrix4fv(glGetUniformLocation(shader_program, "projection"), 1, GL_FALSE, &projection[0][0]);									// Pass projection matrix to shader
-
-		glm::mat4 view = glm::lookAt(glob::cameraPos, glob::cameraPos + glob::cameraFront, glob::cameraUp);										// Create view matrix
-		glUniformMatrix4fv(glGetUniformLocation(shader_program, "view"), 1, GL_FALSE, &view[0][0]);												// Pass view matrix to shader
-
-		/* Transforms to model matrix go here */
-		glUniformMatrix4fv(glGetUniformLocation(shader_program, "model"), 1, GL_FALSE, &switch_model[0][0]);									// Pass model matrix to shader
+		glm::mat4 view = glm::lookAt(glob::cameraPos, glob::cameraPos + glob::cameraFront, glob::cameraUp);										// Create view matrix									
 
 		/**
 		 * Set polygon mode depending on value of wireframe
@@ -301,17 +187,10 @@ int main(int argc, char* argv[]) {
 			glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
 
 		/**
-		 * Draw the VBO in order of the indices held by the EBO.
-		 */
-		glDrawElements(GL_TRIANGLES,							// Draw as triangles
-			sizeof(switch_indices) / sizeof(unsigned int),		// Draw all indices in EBO
-			GL_UNSIGNED_INT,									// Type of indices held by EBO
-			0);													// Start reading EBO at the beginning.
-
-		/**
 		 * Draw models
 		 */
 		draw_model(desk, projection, view);
+		draw_model(console, projection, view);
 
 
 		glfwSwapBuffers(window);		// Swaps front and back framebuffers (output to screen)
