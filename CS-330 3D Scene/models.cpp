@@ -3,6 +3,9 @@
 #define STB_IMAGE_IMPLEMENTATION
 #include "stb_image.h"
 
+#include <vector>
+#define PI 3.141596
+
 #include "models.h"
 
 namespace glob {
@@ -242,6 +245,175 @@ Model get_switch_model(const char* texture_path) {
 	console.texture = console_texture;											// Assing handle to texture
 
 	return console;
+}
+
+Model get_orange_model(const char* texture_path) {
+	using namespace std;
+
+	Model orange;
+	const int floats_per_vertex = 3;
+	const int floats_per_normal = 3;
+	const int floats_per_texcoord = 2;
+
+	/**
+	 * Generate vertices for sphere
+	 * http://www.songho.ca/opengl/gl_sphere.html
+	 */
+	struct vertex {
+		float x, y, z;
+		float nx, ny, nz;
+		float s, t;
+	} to_push;
+
+	vector<vertex> vertices;
+
+	// change these to change attributes of sphere
+	float radius = 1.f;
+	int sector_count = 12;
+	int stack_count = 12;
+
+	{
+		float xy;
+		float lengthInv = 1.f / radius;
+
+		float sector_step = 2 * PI / sector_count;
+		float stack_step = PI / stack_count;
+		float sector_angle,							// theta
+			stack_angle;							// phi
+
+		/**
+		 * Iterate through stacks 
+		 */
+		for (int i = 0; i <= stack_count; ++i) {
+			stack_angle = PI / 2.f - i * stack_step;	// starts at PI/2, ends at -PI/2
+			xy = radius * cosf(stack_angle);			// r * cos(phi)
+			to_push.z = radius * sinf(stack_angle);		// r * sin(phi)
+
+			/**
+			 * Iterate through sectors of current stack
+			 */
+			for (int j = 0; j <= sector_count; ++j) {
+				sector_angle = j * sector_step;			// starts at 0, ends at 2*PI
+
+				// calculate vertex position
+				to_push.x = xy * cosf(sector_angle);	// r * cos(phi) * cosf(theta)
+				to_push.y = xy * sinf(sector_angle);	// r * cos(phi) * sinf(theta)
+
+				// calculate normal: the vector orthonormal to the vertex (for lighting and physics)
+				to_push.nx = to_push.x * lengthInv;
+				to_push.ny = to_push.y * lengthInv;
+				to_push.nz = to_push.z * lengthInv;
+
+				// calculate texture coordinates
+				to_push.s = (float)j / sector_count;
+				to_push.t = (float)i / stack_count;
+				
+				vertices.push_back(to_push);
+			}
+		}
+	}
+
+	/**
+	 * Populate vertex buffer with vertex data in order to be drawn by glDrawArray
+	 * http://www.songho.ca/opengl/gl_sphere.html
+	 * 
+	 * k1---k1+1
+	 * |   / |
+	 * |  /	 |
+	 * k2---k2+1
+	 */
+	vector<vertex> VB;
+
+	{
+		int k1, k2;
+		
+		/**
+		 * Iterate through stacks
+		 */
+		for (int i = 0; i < stack_count; ++i) {
+			k1 = i * (sector_count + 1);	// beginning of current stack
+			k2 = k1 + sector_count + 1;		// beginning of next stack
+
+			/**
+			 * Iterate through sectors of current stack
+			 */
+			for (int j = 0; j < sector_count; ++j, ++k1, ++k2) {
+				if (i != 0) {
+					VB.push_back(vertices.at(k1));
+					VB.push_back(vertices.at(k2));
+					VB.push_back(vertices.at(k1 + 1));
+				}
+
+				if (i != (stack_count-1)) {
+					VB.push_back(vertices.at(k1 + 1));
+					VB.push_back(vertices.at(k2));
+					VB.push_back(vertices.at(k2 + 1));
+				}
+			}
+		}
+	}
+
+	/**
+	 * Generate VAO, VBO and configure attributes for VAO
+	 */
+	unsigned int VBO;
+	int stride = floats_per_vertex + floats_per_normal + floats_per_texcoord;
+
+	glGenVertexArrays(1, &orange.VAO);					// Generate a VAO and set switch_VAO to the new VAO's ID number
+	glGenBuffers(1, &VBO);								// Generate a VBO and set switch_VBO to the new VBO's ID number
+
+	glBindVertexArray(orange.VAO);						// Bind the VAO to the context, which saves the following function calls.
+
+	glBindBuffer(GL_ARRAY_BUFFER, VBO);					// Bind the VBO to the context (and by extension the currently bound VAO).
+	glBufferData(GL_ARRAY_BUFFER,
+		VB.size() * sizeof(vertex),
+		&VB[0],
+		GL_STATIC_DRAW);								// Copy the data from vertices to the VBO.
+
+	glVertexAttribPointer(0, floats_per_vertex,
+		GL_FLOAT, GL_FALSE,
+		stride * sizeof(float), (void*)0);				// Tells the context (and by extension the VAO) how to read the first attribute of the vertex buffer.
+	glEnableVertexAttribArray(0);						// Enable the above vertex attribute array.
+
+	glVertexAttribPointer(1, floats_per_normal,
+		GL_FLOAT, GL_FALSE,
+		stride * sizeof(float),
+		(void*)(sizeof(float)* floats_per_vertex ));	// Tells the context (and by extension the VAO) how to read the second attribute of the vertex buffer.
+	glEnableVertexAttribArray(1);						// Enable the above vertex attribute array.
+
+	glVertexAttribPointer(2, floats_per_texcoord,
+		GL_FLOAT, GL_FALSE,
+		stride * sizeof(float),
+		(void*)(sizeof(float) * (floats_per_vertex + floats_per_normal) 
+			));											// Tells the context (and by extension the VAO) how to read the second attribute of the vertex buffer.
+	glEnableVertexAttribArray(2);						// Enable the above vertex attribute array.
+
+	glBindVertexArray(0);								// Unbind the VAO from the context.
+
+	/**
+	 * Set orange models number of vertices
+	 */
+	orange.number_of_vertices = VB.size();
+
+	/**
+	 * Define orange model matrix
+	 */
+	orange.model = glm::mat4(1.0f);												// Initially set as identity matrix
+	orange.model = glm::translate(orange.model, glm::vec3(0.25f, 0.f, 0.5f));
+	orange.model = glm::scale(orange.model, glm::vec3(0.06f, 0.06f, 0.06f));
+
+	/**
+	 * Set up texture
+	 */
+	unsigned int console_texture = load_wrap_texture(texture_path);				// Generate texture with wrapping attributes (ideally it will be a web and should not repeat)
+
+	glob::universal_shader->use();												// Bind universal shader to context
+	glob::universal_shader->setInt("texture", glob::number_of_textures++);		// Tell shader where to find texture
+
+	orange.texture_offset = glob::number_of_textures - 1;						// Assign offset from GL_TEXTURE0 texture unit
+	orange.texture = console_texture;											// Assing handle to texture
+
+	return orange;
 }
 
 

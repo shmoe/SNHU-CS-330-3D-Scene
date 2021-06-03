@@ -22,5 +22,7 @@ Model get_desk_model(const char* texture_path);
 
 Model get_switch_model(const char* texture_path);
 
+Model get_orange_model(const char* texture_path);
+
 void draw_model(Model model, glm::mat4 projection, glm::mat4 view);
 #endif//__MODELS_H__
