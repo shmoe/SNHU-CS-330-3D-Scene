@@ -130,6 +130,7 @@ int main(int argc, char* argv[]) {
 	 */
 	Model desk = get_desk_model("data/wood.jpg");
 	Model console = get_switch_model("data/switch.jpg");
+	Model orange = get_orange_model("data/wood.jpg");
 	
 	/**
 	 * Main rendering loop
@@ -191,6 +192,7 @@ int main(int argc, char* argv[]) {
 		 */
 		draw_model(desk, projection, view);		// Draw desk Model
 		draw_model(console, projection, view);	// Draw console Model
+		draw_model(orange, projection, view);	// Draw orange Model
 
 
 		glfwSwapBuffers(window);				// Swaps front and back framebuffers (output to screen)
