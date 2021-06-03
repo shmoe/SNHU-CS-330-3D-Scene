@@ -189,14 +189,14 @@ int main(int argc, char* argv[]) {
 		/**
 		 * Draw models
 		 */
-		draw_model(desk, projection, view);
-		draw_model(console, projection, view);
+		draw_model(desk, projection, view);		// Draw desk Model
+		draw_model(console, projection, view);	// Draw console Model
 
 
-		glfwSwapBuffers(window);		// Swaps front and back framebuffers (output to screen)
+		glfwSwapBuffers(window);				// Swaps front and back framebuffers (output to screen)
 
-		glfwPollEvents();				// Check to see if any events were triggered and call
-											// the corresponding callback functions
+		glfwPollEvents();						// Check to see if any events were triggered and call
+													// the corresponding callback functions
 	}
 
 	/**
@@ -319,7 +319,7 @@ void processInput(GLFWwindow* window)
 	static bool p_pressed = false;
 	static bool o_pressed = false;
 
-	using namespace glob;
+	using namespace glob;														// This method accesses and modifies global variables
 	if (glfwGetKey(window, GLFW_KEY_ESCAPE) == GLFW_PRESS)
 		glfwSetWindowShouldClose(window, true);									// When "ESC" is pressed, set the flag that tells main()'s render loop to exit
 	
@@ -365,7 +365,7 @@ void processInput(GLFWwindow* window)
 // -------------------------------------------------------
 void mouse_callback(GLFWwindow* window, double xpos, double ypos)
 {
-	using namespace glob;
+	using namespace glob;			// This method accesses and modifies global variables
 	if (firstMouse)
 	{
 		lastX = xpos;
@@ -412,7 +412,7 @@ void mouse_callback(GLFWwindow* window, double xpos, double ypos)
 // ----------------------------------------------------------------------
 void scroll_callback(GLFWwindow* window, double xoffset, double yoffset)
 {
-	using namespace glob;
+	using namespace glob;					// This method access and modifies global variables
 	if (zoom) {
 		fov -= (float)yoffset;				// Zoom in on scroll up, out on scroll down
 		if (fov < 1.0f)
