@@ -197,7 +197,6 @@ Model get_desk_model(const char* texture_path) {
 	return plane;
 }
 
-
 Model get_switch_model(const char* texture_path) {
 	Model console;
 	const float texture_width = 6668.f;
@@ -447,6 +446,33 @@ Model get_orange_model(const char* texture_path) {
 	return orange;
 }
 
+Model get_napkin_model(const char* texture_path) {
+	Model napkin;
+
+	vertex napkin_vertices[6] = {
+		-1.0f, 0.0f, 1.0f, 0.f, 0.f, 0.f, 0.0f, 0.0f,	// Front left
+		-1.0f, 0.0f, -1.0f, 0.f, 0.f, 0.f, 0.0f, 1.0f,	// Back left, brown
+		1.0f, 0.0f, -1.0f, 0.f, 0.f, 0.f, 1.0f, 1.0f,	// Back right, brown
+		1.0f, 0.0f, -1.0f, 0.f, 0.f, 0.f, 1.0f, 1.0f,	// Back right, brown
+		-1.0f, 0.0f, 1.0f, 0.f, 0.f, 0.f, 0.0f, 0.0f,	// Front left, brown
+		1.0f, 0.0f, 1.0f, 0.f, 0.f, 0.f, 1.0f, 0.0f	// Front right, brown
+	};
+
+	std::vector<vertex> vertices(napkin_vertices, napkin_vertices + 6);	// fill vertices with above vector
+
+	/**
+	 * Define napkin model matrix
+	 */
+	glm::mat4 model = glm::mat4(1.f);
+	model = glm::translate(model, glm::vec3(0.25f, -0.064, 0.5f));
+	model = glm::scale(model, glm::vec3(0.07f, 0.07f, 0.07f));
+
+
+	create_model(napkin, vertices, model, texture_path);
+
+	return napkin;
+}
+
 Model get_soda_model(const char* texture_path) {
 	using namespace std;
 
@@ -602,7 +628,7 @@ Model get_soda_model(const char* texture_path) {
 	glm::mat4 model = glm::mat4(1.0f);												// Initially set as identity matrix
 	model = glm::translate(model, glm::vec3(-.25f, -0.060f, 0.5f));
 	model = glm::scale(model, glm::vec3(0.04f, 0.04f, 0.04f));
-	//model = glm::rotate(model, glm::radians(90.f), glm::vec3(1.f, 0.f, 0.f));
+	model = glm::rotate(model, glm::radians(120.f), glm::vec3(0.f, 1.f, 0.f));
 
 
  	create_model(soda, VB, model, texture_path);
