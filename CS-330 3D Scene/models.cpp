@@ -443,33 +443,38 @@ Model get_soda_model(const char* texture_path) {
 	 */
 
 	vector<vertex> vertices;
+	vertex lid_middle;
+	vertex bottom_middle;
 
 	// change these to change attributes of can
-	float inner_radius = 0.8f;
-	float outer_radius = 1.f;
-	float height = 2.f;
+	float radius = 1.f;
+	float bevel_width = 0.2;
+	float height = 4.f;
 	int stacks_per_bevel = 3;
 	int sector_count = 36;
 	int stack_count = 36;
 
+	// assing positions to center points for lid and bottom
+	lid_middle.x = 0.f;
+	lid_middle.y = 0.f;
+	lid_middle.z = height;
+	bottom_middle.x = 0.f;
+	bottom_middle.y = 0.f;
+	bottom_middle.z = 0.f;
+
 	{
 		struct vertex to_push;
 
-		float xy;
-		float lengthInv = 1.f / outer_radius;				// warning: definitely wrong, lengthInv should change per stack case
+		float lengthInv = 1.f / radius;				// warning: definitely wrong, lengthInv should change per stack case
 
 		float sector_step = 2 * PI / sector_count;
-		float stack_step = PI / stack_count;
-		float sector_angle,							// theta
-			stack_angle;							// phi
+		float sector_angle;							// theta
 
 		/**
 		 * Iterate through sectors
 		 */
 		for (int i = 0; i <= stack_count; ++i) {
-			stack_angle = PI / 2.f - i * stack_step;	// starts at PI/2, ends at -PI/2
-			//xy = radius * cosf(stack_angle);			// r * cos(phi)
-			//to_push.z = radius * sinf(stack_angle);		// r * sin(phi)
+			to_push.z = height - height * ((float) i / stack_count);
 
 			/**
 			 * Iterate through sectors of current stack
@@ -478,33 +483,21 @@ Model get_soda_model(const char* texture_path) {
 				sector_angle = j * sector_step;			// starts at 0, ends at 2*PI
 
 				// calculate vertex position
-				if (i == 0) {
-					to_push.x = inner_radius * cosf(sector_angle);
-					to_push.y = inner_radius * sinf(sector_angle);
-					to_push.z = height;
-				}										// case: top lid
-				if (i < stacks_per_bevel) {
-					float bevel_radius = (inner_radius + outer_radius * (i / stack_count));
+				if (i <= stacks_per_bevel) {
+					float bevel_radius = radius + (bevel_width * ((float) i / stacks_per_bevel));
 					to_push.x = bevel_radius * cosf(sector_angle);
 					to_push.y = bevel_radius * sinf(sector_angle);
-					to_push.z = height - i * (height / stack_count);
 				}										// case: upper bevel
-				else if (i > stack_count && i < stack_count - stacks_per_bevel) {
-					to_push.x = outer_radius * cosf(sector_angle);
-					to_push.y = outer_radius * sinf(sector_angle);
-					to_push.z = height - i * (height / stack_count);
+				else if (i < stack_count - stacks_per_bevel) {
+					to_push.x = (radius + bevel_width) * cosf(sector_angle);
+					to_push.y = (radius + bevel_width) * sinf(sector_angle);
 				}										// case: body
-				else if (i != stack_count) {
-					float bevel_radius = (outer_radius - inner_radius * (i / stack_count));
+				else {
+					float bevel_radius = radius + (bevel_width * ((float) (stack_count-i)  / (stacks_per_bevel)));
 					to_push.x = bevel_radius * cosf(sector_angle);
 					to_push.y = bevel_radius * sinf(sector_angle);
-					to_push.z = height - i * (height / stack_count);
 				}										// case: lower bevel
-				else {
-					to_push.x = outer_radius * cosf(sector_angle);
-					to_push.y = outer_radius * sinf(sector_angle);
-					to_push.z = 0;
-				}										// case: bottom lid
+
 
 				// calculate normal: the vector orthonormal to the vertex (for lighting and physics)
 				to_push.nx = to_push.x * lengthInv;
@@ -547,17 +540,41 @@ Model get_soda_model(const char* texture_path) {
 			 * Iterate through sectors of current stack
 			 */
 			for (int j = 0; j < sector_count; ++j, ++k1, ++k2) {
-				if (i != 0) {
-					VB.push_back(vertices.at(k1));
-					VB.push_back(vertices.at(k2));
-					VB.push_back(vertices.at(k1 + 1));
-				}
+				if (i == 0) {
+					// set tex_coords
+					lid_middle.s = (float)j / sector_count;
+					lid_middle.t = 0.f;
 
-				if (i != (stack_count - 1)) {
+					// set normals
+					//TODO
+
+					VB.push_back(lid_middle);
+					VB.push_back(vertices.at(k1));
 					VB.push_back(vertices.at(k1 + 1));
+				}	// top lid
+
+				if (i == stack_count - 1) {
+					// set tex_coords
+					bottom_middle.s = (float)j / sector_count;
+					bottom_middle.t = 1.f;
+
+					// set normals
+
+					VB.push_back(bottom_middle);
 					VB.push_back(vertices.at(k2));
 					VB.push_back(vertices.at(k2 + 1));
-				}
+				} // bottom lid
+
+				// triangle 1
+				VB.push_back(vertices.at(k1));
+				VB.push_back(vertices.at(k2));
+				VB.push_back(vertices.at(k1 + 1));
+
+				// triangle 2
+				VB.push_back(vertices.at(k1 + 1));
+				VB.push_back(vertices.at(k2));
+				VB.push_back(vertices.at(k2 + 1));
+
 			}
 		}
 	}
@@ -566,8 +583,9 @@ Model get_soda_model(const char* texture_path) {
 	 * Define orange model matrix
 	 */
 	glm::mat4 model = glm::mat4(1.0f);												// Initially set as identity matrix
-	model = glm::translate(model, glm::vec3(-0.25f, 0.f, 0.5f));
+	model = glm::translate(model, glm::vec3(-.25f, 0.25f, 0.5f));
 	model = glm::scale(model, glm::vec3(0.06f, 0.06f, 0.06f));
+	model = glm::rotate(model, glm::radians(90.f), glm::vec3(1.f, 0.f, 0.f));
 
 
 	create_model(soda, VB, model, texture_path);
