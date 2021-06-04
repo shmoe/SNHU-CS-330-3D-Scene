@@ -447,11 +447,78 @@ Model get_soda_model(const char* texture_path) {
 	// change these to change attributes of can
 	float inner_radius = 0.8f;
 	float outer_radius = 1.f;
+	float height = 2.f;
+	int stacks_per_bevel = 3;
 	int sector_count = 36;
 	int stack_count = 36;
 
 	{
 		struct vertex to_push;
+
+		float xy;
+		float lengthInv = 1.f / outer_radius;				// warning: definitely wrong, lengthInv should change per stack case
+
+		float sector_step = 2 * PI / sector_count;
+		float stack_step = PI / stack_count;
+		float sector_angle,							// theta
+			stack_angle;							// phi
+
+		/**
+		 * Iterate through sectors
+		 */
+		for (int i = 0; i <= stack_count; ++i) {
+			stack_angle = PI / 2.f - i * stack_step;	// starts at PI/2, ends at -PI/2
+			//xy = radius * cosf(stack_angle);			// r * cos(phi)
+			//to_push.z = radius * sinf(stack_angle);		// r * sin(phi)
+
+			/**
+			 * Iterate through sectors of current stack
+			 */
+			for (int j = 0; j <= sector_count; ++j) {
+				sector_angle = j * sector_step;			// starts at 0, ends at 2*PI
+
+				// calculate vertex position
+				if (i == 0) {
+					to_push.x = inner_radius * cosf(sector_angle);
+					to_push.y = inner_radius * sinf(sector_angle);
+					to_push.z = height;
+				}										// case: top lid
+				if (i < stacks_per_bevel) {
+					float bevel_radius = (inner_radius + outer_radius * (i / stack_count));
+					to_push.x = bevel_radius * cosf(sector_angle);
+					to_push.y = bevel_radius * sinf(sector_angle);
+					to_push.z = height - i * (height / stack_count);
+				}										// case: upper bevel
+				else if (i > stack_count && i < stack_count - stacks_per_bevel) {
+					to_push.x = outer_radius * cosf(sector_angle);
+					to_push.y = outer_radius * sinf(sector_angle);
+					to_push.z = height - i * (height / stack_count);
+				}										// case: body
+				else if (i != stack_count) {
+					float bevel_radius = (outer_radius - inner_radius * (i / stack_count));
+					to_push.x = bevel_radius * cosf(sector_angle);
+					to_push.y = bevel_radius * sinf(sector_angle);
+					to_push.z = height - i * (height / stack_count);
+				}										// case: lower bevel
+				else {
+					to_push.x = outer_radius * cosf(sector_angle);
+					to_push.y = outer_radius * sinf(sector_angle);
+					to_push.z = 0;
+				}										// case: bottom lid
+
+				// calculate normal: the vector orthonormal to the vertex (for lighting and physics)
+				to_push.nx = to_push.x * lengthInv;
+				to_push.ny = to_push.y * lengthInv;
+				to_push.nz = to_push.z * lengthInv;
+
+				// calculate texture coordinates
+				to_push.s = (float)j / sector_count;
+				to_push.t = (float)i / stack_count;
+
+				vertices.push_back(to_push);
+			}
+		}
+
 	}
 
 	/**
