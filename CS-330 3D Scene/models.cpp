@@ -46,7 +46,7 @@ unsigned int load_wrap_texture(const char* texture_path) {
 	{
 		std::cerr << "ERROR::TEXTURE::DATA::LOADING_FAILED" << std::endl;
 	}																							// On sucess, print to stderr
-	stbi_image_free(img_data);																	// Free img_data from RAM, as it has been copied to VRAM
+ 	stbi_image_free(img_data);																	// Free img_data from RAM, as it has been copied to VRAM
 
 	return texture;
 }
@@ -338,7 +338,7 @@ Model get_orange_model(const char* texture_path) {
 	{
 		struct vertex to_push;
 
-		float xy;
+		float xz;
 		float lengthInv = 1.f / radius;
 
 		float sector_step = 2 * PI / sector_count;
@@ -351,8 +351,8 @@ Model get_orange_model(const char* texture_path) {
 		 */
 		for (int i = 0; i <= stack_count; ++i) {
 			stack_angle = PI / 2.f - i * stack_step;	// starts at PI/2, ends at -PI/2
-			xy = radius * cosf(stack_angle);			// r * cos(phi)
-			to_push.z = radius * sinf(stack_angle);		// r * sin(phi)
+			xz = radius * cosf(stack_angle);			// r * cos(phi)
+			to_push.y = radius * sinf(stack_angle);		// r * sin(phi)
 
 			/**
 			 * Iterate through sectors of current stack
@@ -361,8 +361,8 @@ Model get_orange_model(const char* texture_path) {
 				sector_angle = j * sector_step;			// starts at 0, ends at 2*PI
 
 				// calculate vertex position
-				to_push.x = xy * cosf(sector_angle);	// r * cos(phi) * cosf(theta)
-				to_push.y = xy * sinf(sector_angle);	// r * cos(phi) * sinf(theta)
+				to_push.x = xz * cosf(sector_angle);	// r * cos(phi) * cosf(theta)
+				to_push.z = xz * sinf(sector_angle);	// r * cos(phi) * sinf(theta)
 
 				// calculate normal: the vector orthonormal to the vertex (for lighting and physics)
 				to_push.nx = to_push.x * lengthInv;
@@ -451,13 +451,13 @@ Model get_soda_model(const char* texture_path) {
 	float bevel_width = 0.2;
 	float height = 4.f;
 	int stacks_per_bevel = 3;
-	int sector_count = 36;
+	int sector_count = 12;
 	int stack_count = 36;
 
 	// assing positions to center points for lid and bottom
 	lid_middle.x = 0.f;
-	lid_middle.y = 0.f;
-	lid_middle.z = height;
+	lid_middle.y = height;
+	lid_middle.z = 0.f;
 	bottom_middle.x = 0.f;
 	bottom_middle.y = 0.f;
 	bottom_middle.z = 0.f;
@@ -474,7 +474,7 @@ Model get_soda_model(const char* texture_path) {
 		 * Iterate through sectors
 		 */
 		for (int i = 0; i <= stack_count; ++i) {
-			to_push.z = height - height * ((float) i / stack_count);
+			to_push.y = height - height * ((float) i / stack_count);
 
 			/**
 			 * Iterate through sectors of current stack
@@ -486,18 +486,17 @@ Model get_soda_model(const char* texture_path) {
 				if (i <= stacks_per_bevel) {
 					float bevel_radius = radius + (bevel_width * ((float) i / stacks_per_bevel));
 					to_push.x = bevel_radius * cosf(sector_angle);
-					to_push.y = bevel_radius * sinf(sector_angle);
+					to_push.z = bevel_radius * sinf(sector_angle);
 				}										// case: upper bevel
 				else if (i < stack_count - stacks_per_bevel) {
 					to_push.x = (radius + bevel_width) * cosf(sector_angle);
-					to_push.y = (radius + bevel_width) * sinf(sector_angle);
+					to_push.z = (radius + bevel_width) * sinf(sector_angle);
 				}										// case: body
 				else {
 					float bevel_radius = radius + (bevel_width * ((float) (stack_count-i)  / (stacks_per_bevel)));
 					to_push.x = bevel_radius * cosf(sector_angle);
-					to_push.y = bevel_radius * sinf(sector_angle);
+					to_push.z = bevel_radius * sinf(sector_angle);
 				}										// case: lower bevel
-
 
 				// calculate normal: the vector orthonormal to the vertex (for lighting and physics)
 				to_push.nx = to_push.x * lengthInv;
@@ -508,6 +507,7 @@ Model get_soda_model(const char* texture_path) {
 				to_push.s = (float)j / sector_count;
 				to_push.t = (float)i / stack_count;
 
+				
 				vertices.push_back(to_push);
 			}
 		}
@@ -559,6 +559,7 @@ Model get_soda_model(const char* texture_path) {
 					bottom_middle.t = 1.f;
 
 					// set normals
+					//TODO
 
 					VB.push_back(bottom_middle);
 					VB.push_back(vertices.at(k2));
@@ -583,12 +584,12 @@ Model get_soda_model(const char* texture_path) {
 	 * Define orange model matrix
 	 */
 	glm::mat4 model = glm::mat4(1.0f);												// Initially set as identity matrix
-	model = glm::translate(model, glm::vec3(-.25f, 0.18f, 0.5f));
-	model = glm::scale(model, glm::vec3(0.06f, 0.06f, 0.06f));
-	model = glm::rotate(model, glm::radians(90.f), glm::vec3(1.f, 0.f, 0.f));
+	model = glm::translate(model, glm::vec3(-.25f, -0.060f, 0.5f));
+	model = glm::scale(model, glm::vec3(0.04f, 0.04f, 0.04f));
+	//model = glm::rotate(model, glm::radians(90.f), glm::vec3(1.f, 0.f, 0.f));
 
 
-	create_model(soda, VB, model, texture_path);
+ 	create_model(soda, VB, model, texture_path);
 
 	return soda;
 }
