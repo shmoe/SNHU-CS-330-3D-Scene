@@ -123,17 +123,18 @@ Model get_desk_model(const char* texture_path) {
 	 * Set up VAO and number of vertices
 	 */
 	const float plane_vertices[] = {
-	-1.0f, 0.0f, 1.0f,		0.0f, 0.0f,	// Front left
-	-1.0f, 0.0f, -1.0f,		0.0f, 1.0f,	// Back left, brown
-	1.0f, 0.0f, -1.0f,		1.0f, 1.0f,	// Back right, brown
-	1.0f, 0.0f, -1.0f,		1.0f, 1.0f,	// Back right, brown
-	-1.0f, 0.0f, 1.0f,		0.0f, 0.0f,	// Front left, brown
-	1.0f, 0.0f, 1.0f,		1.0f, 0.0f	// Front right, brown
+	-1.0f, 0.0f, 1.0f,	0.f, 0.f, 0.f,	0.0f, 0.0f,	// Front left
+	-1.0f, 0.0f, -1.0f,	0.f, 0.f, 0.f,	0.0f, 1.0f,	// Back left, brown
+	1.0f, 0.0f, -1.0f,	0.f, 0.f, 0.f,	1.0f, 1.0f,	// Back right, brown
+	1.0f, 0.0f, -1.0f,	0.f, 0.f, 0.f,	1.0f, 1.0f,	// Back right, brown
+	-1.0f, 0.0f, 1.0f,	0.f, 0.f, 0.f,	0.0f, 0.0f,	// Front left, brown
+	1.0f, 0.0f, 1.0f,	0.f, 0.f, 0.f,	1.0f, 0.0f	// Front right, brown
 	};
 
 	const int floats_per_vertex = 3;
+	const int floats_per_normal = 3;
 	const int floats_per_texture = 2;
-	const int stride = floats_per_texture + floats_per_vertex;
+	const int stride = floats_per_vertex + floats_per_normal + floats_per_texture;
 
 	unsigned int plane_VAO, plane_VBO;
 
@@ -153,11 +154,18 @@ Model get_desk_model(const char* texture_path) {
 		stride * sizeof(float), (void*)0);				// Tells the context (and by extension the VAO) how to read the first attribute of the vertex buffer.
 	glEnableVertexAttribArray(0);						// Enable the above vertex attribute array.
 
-	glVertexAttribPointer(1, floats_per_texture,
+	glVertexAttribPointer(1, floats_per_normal,
 		GL_FLOAT, GL_FALSE,
 		stride * sizeof(float),
 		(void*)(sizeof(float) * floats_per_vertex));	// Tells the context (and by extension the VAO) how to read the second attribute of the vertex buffer.
 	glEnableVertexAttribArray(1);						// Enable the above vertex attribute array.
+
+	glVertexAttribPointer(2, floats_per_texture,
+		GL_FLOAT, GL_FALSE,
+		stride * sizeof(float),
+		(void*)(sizeof(float) * (floats_per_vertex + floats_per_normal))
+			);											// Tells the context (and by extension the VAO) how to read the second attribute of the vertex buffer.
+	glEnableVertexAttribArray(2);						// Enable the above vertex attribute array.
 
 	glBindVertexArray(0);								// Unbind the VAO from the context.
 
@@ -205,65 +213,66 @@ Model get_switch_model(const char* texture_path) {
 	 */
 	const float console_vertices[] = {
 		// front face
-		-0.5f, 0.5882f, 1.0f,		front_face_offset, front_face_height,	// Front top left
-		0.5f, 0.5882f, 1.0f,		1.f, front_face_height, 				// Front top right
-		0.5f, -0.5882f, 1.0f,		1.f, 0.0f,								// Front bottom left
-		0.5f, -0.5882f, 1.0f,		1.f, 0.0f,								// Front bottom left
-		-0.5f, 0.5882f, 1.0f,		front_face_offset, front_face_height,	// Front top right
-		-0.5f, -0.5882f, 1.0f,		front_face_offset, 0.f,					// Front bottom right
+		-0.5f, 0.5882f, 1.0f,	0.f, 0.f, 0.f,	front_face_offset, front_face_height,	// Front top left
+		0.5f, 0.5882f, 1.0f,	0.f, 0.f, 0.f,	1.f, front_face_height, 				// Front top right
+		0.5f, -0.5882f, 1.0f,	0.f, 0.f, 0.f,	1.f, 0.0f,								// Front bottom left
+		0.5f, -0.5882f, 1.0f,	0.f, 0.f, 0.f,	1.f, 0.0f,								// Front bottom left
+		-0.5f, 0.5882f, 1.0f,	0.f, 0.f, 0.f,	front_face_offset, front_face_height,	// Front top right
+		-0.5f, -0.5882f, 1.0f,	0.f, 0.f, 0.f,	front_face_offset, 0.f,					// Front bottom right
 
 		// right face
-		0.5f, 0.5882f, 1.0f,		side_face_length, 1.f,					// Front top right
-		0.5f, 0.5882f, 0.93f,		0.0f, 1.f,								// Back top right
-		0.5f, -0.5882f, 1.0f,		0.0f, 0.0f,								// Front bottom left
-		0.5f, -0.5882f, 1.0f,		0.0f, 0.0f,								// Front bottom left
-		0.5f, 0.5882f, 0.93f,		0.0f, 1.f,								// Back top right
-		0.5f, -0.5882f, 0.93f,		side_face_length, 0.0f,					// Back bottom left
+		0.5f, 0.5882f, 1.0f,	0.f, 0.f, 0.f,	side_face_length, 1.f,					// Front top right
+		0.5f, 0.5882f, 0.93f,	0.f, 0.f, 0.f,	0.0f, 1.f,								// Back top right
+		0.5f, -0.5882f, 1.0f,	0.f, 0.f, 0.f,	0.0f, 0.0f,								// Front bottom left
+		0.5f, -0.5882f, 1.0f,	0.f, 0.f, 0.f,	0.0f, 0.0f,								// Front bottom left
+		0.5f, 0.5882f, 0.93f,	0.f, 0.f, 0.f,	0.0f, 1.f,								// Back top right
+		0.5f, -0.5882f, 0.93f,	0.f, 0.f, 0.f,	side_face_length, 0.0f,					// Back bottom left
 
 		// back face
-		-0.5f, 0.5882f, 0.93f,		front_face_offset, 1.f, 				// Back top left
-		0.5f, 0.5882f, 0.93f,		0.f, 1.0f, 								// Back top right
-		-0.5f, -0.5882f, 0.93f,		0.0f, 0.0f,								// Back bottom right
-		-0.5f, -0.5882f, 0.93f,		0.0f, 0.0f,								// Back bottom right
-		0.5f, 0.5882f, 0.93f,		0.0f, 1.0f,								// Back top right
-		0.5f, -0.5882f, 0.93f,		front_face_offset, 0.0f,				// Back bottom left
+		-0.5f, 0.5882f, 0.93f,	0.f, 0.f, 0.f,	front_face_offset, 1.f, 				// Back top left
+		0.5f, 0.5882f, 0.93f,	0.f, 0.f, 0.f,	0.f, 1.0f, 								// Back top right
+		-0.5f, -0.5882f, 0.93f,	0.f, 0.f, 0.f,	0.0f, 0.0f,								// Back bottom right
+		-0.5f, -0.5882f, 0.93f,	0.f, 0.f, 0.f,	0.0f, 0.0f,								// Back bottom right
+		0.5f, 0.5882f, 0.93f,	0.f, 0.f, 0.f,	0.0f, 1.0f,								// Back top right
+		0.5f, -0.5882f, 0.93f,	0.f, 0.f, 0.f,	front_face_offset, 0.0f,				// Back bottom left
 
 		// left face
-		-0.5f, 0.5882f, 1.0f,		side_face_length, 1.f,					// Front top left
-		-0.5f, 0.5882f, 0.93f,		0.0f, 1.0f,								// Back top left
-		-0.5f, -0.5882f, 0.93f,		0.0f, 0.0f,								// Back bottom right
-		-0.5f, -0.5882f, 0.93f,		0.0f, 0.0f,								// Back bottom right
-		-0.5f, 0.5882f, 1.0f,		0.0f, 1.0f,							 	// Front top left
-		-0.5f, -0.5882f, 1.0f,		side_face_length, 0.0f,					// Front bottom right
+		-0.5f, 0.5882f, 1.0f,	0.f, 0.f, 0.f,	side_face_length, 1.f,					// Front top left
+		-0.5f, 0.5882f, 0.93f,	0.f, 0.f, 0.f,	0.0f, 1.0f,								// Back top left
+		-0.5f, -0.5882f, 0.93f,	0.f, 0.f, 0.f,	0.0f, 0.0f,								// Back bottom right
+		-0.5f, -0.5882f, 0.93f,	0.f, 0.f, 0.f,	0.0f, 0.0f,								// Back bottom right
+		-0.5f, 0.5882f, 1.0f,	0.f, 0.f, 0.f,	0.0f, 1.0f,							 	// Front top left
+		-0.5f, -0.5882f, 1.0f,	0.f, 0.f, 0.f,	side_face_length, 0.0f,					// Front bottom right
 
 		// bottom face
-		-0.5f, -0.5882f, 1.0f,		side_face_length, 1.f,					// Front bottom right
-		0.5f, -0.5882f, 1.0f,		0.0f, 1.0f,								// Front bottom left
-		-0.5f, -0.5882f, 0.93f,		0.0f, 0.0f,								// Back bottom right
-		-0.5f, -0.5882f, 0.93f,		0.0f, 0.0f,								// Back bottom right
-		0.5f, -0.5882f, 1.0f,		0.0f, 1.0f,								// Front bottom left
-		0.5f, -0.5882f, 0.93f,		side_face_length, 0.0f,				// Back bottom left
+		-0.5f, -0.5882f, 1.0f,	0.f, 0.f, 0.f,	side_face_length, 1.f,					// Front bottom right
+		0.5f, -0.5882f, 1.0f,	0.f, 0.f, 0.f,	0.0f, 1.0f,								// Front bottom left
+		-0.5f, -0.5882f, 0.93f,	0.f, 0.f, 0.f,	0.0f, 0.0f,								// Back bottom right
+		-0.5f, -0.5882f, 0.93f,	0.f, 0.f, 0.f,	0.0f, 0.0f,								// Back bottom right
+		0.5f, -0.5882f, 1.0f,	0.f, 0.f, 0.f,	0.0f, 1.0f,								// Front bottom left
+		0.5f, -0.5882f, 0.93f,	0.f, 0.f, 0.f,	side_face_length, 0.0f,				// Back bottom left
 
 		// top face
-		-0.5f, 0.5882f, 1.0f,		side_face_length, 1.f,					// Front top left
-		-0.5f, 0.5882f, 0.93f,		0.0f, 1.0f,								// Back top left
-		0.5f, 0.5882f, 0.93f,		0.0f, 0.0f,								// Back top right
-		0.5f, 0.5882f, 0.93f,		0.0f, 0.0f,								// Back top right
-		-0.5f, 0.5882f, 1.0f,		0.0f, 1.0f,								// Front top left
-		0.5f, 0.5882f, 1.0f,		side_face_length, 0.0f,				// Front top right
+		-0.5f, 0.5882f, 1.0f,	0.f, 0.f, 0.f,	side_face_length, 1.f,					// Front top left
+		-0.5f, 0.5882f, 0.93f,	0.f, 0.f, 0.f,	0.0f, 1.0f,								// Back top left
+		0.5f, 0.5882f, 0.93f,	0.f, 0.f, 0.f,	0.0f, 0.0f,								// Back top right
+		0.5f, 0.5882f, 0.93f,	0.f, 0.f, 0.f,	0.0f, 0.0f,								// Back top right
+		-0.5f, 0.5882f, 1.0f,	0.f, 0.f, 0.f,	0.0f, 1.0f,								// Front top left
+		0.5f, 0.5882f, 1.0f,	0.f, 0.f, 0.f,	side_face_length, 0.0f,				// Front top right
 
 		// stand
-		-0.5f + (14.0f / 17.0f), -0.5882f + (6.0f / 10.0f), 0.93f,	front_face_offset, 1.f,		// Stand top left
-		-0.5f + (16.0f / 17.0f), -0.5882f + (6.0f / 10.0f), 0.93f,	0.0f, 1.0f,					// Stand top right
-		-0.5f + (14.0f / 17.0f), -0.5f, 0.70f,						0.0f, 0.0f,					// Stand bottom left
-		-0.5f + (14.0f / 17.0f), -0.5f, 0.70f,						0.0f, 0.0f,					// Stand bottom left
-		-0.5f + (16.0f / 17.0f), -0.5882f + (6.0f / 10.0f), 0.93f,	0.0f, 1.0f,					// Stand top right
-		-0.5f + (16.0f / 17.0f), -0.5f, 0.70f,						front_face_offset, 0.0f		// Stand bottom right
+		-0.5f + (14.0f / 17.0f), -0.5882f + (6.0f / 10.0f), 0.93f,	0.f, 0.f, 0.f,	front_face_offset, 1.f,		// Stand top left
+		-0.5f + (16.0f / 17.0f), -0.5882f + (6.0f / 10.0f), 0.93f,	0.f, 0.f, 0.f,	0.0f, 1.0f,					// Stand top right
+		-0.5f + (14.0f / 17.0f), -0.5f, 0.70f,						0.f, 0.f, 0.f,	0.0f, 0.0f,					// Stand bottom left
+		-0.5f + (14.0f / 17.0f), -0.5f, 0.70f,						0.f, 0.f, 0.f,	0.0f, 0.0f,					// Stand bottom left
+		-0.5f + (16.0f / 17.0f), -0.5882f + (6.0f / 10.0f), 0.93f,	0.f, 0.f, 0.f,	0.0f, 1.0f,					// Stand top right
+		-0.5f + (16.0f / 17.0f), -0.5f, 0.70f,						0.f, 0.f, 0.f,	front_face_offset, 0.0f		// Stand bottom right
 	};
 
 	const int floats_per_vertex = 3;
+	const int floats_per_normal = 3;
 	const int floats_per_texture = 2;
-	const int stride = floats_per_texture + floats_per_vertex;
+	const int stride = floats_per_vertex + floats_per_normal + floats_per_texture;
 
 	unsigned int switch_VAO, switch_VBO;
 	glGenVertexArrays(1, &switch_VAO);					// Generate a VAO and set switch_VAO to the new VAO's ID number
@@ -282,11 +291,18 @@ Model get_switch_model(const char* texture_path) {
 		stride * sizeof(float), (void*)0);				// Tells the context (and by extension the VAO) how to read the first attribute of the vertex buffer.
 	glEnableVertexAttribArray(0);						// Enable the above vertex attribute array.
 
-	glVertexAttribPointer(1, floats_per_texture,
+	glVertexAttribPointer(1, floats_per_normal,
 		GL_FLOAT, GL_FALSE,
 		stride * sizeof(float),
-		(void*)(sizeof(float) * 3));					// Tells the context (and by extension the VAO) how to read the second attribute of the vertex buffer.
+		(void*)(sizeof(float) * floats_per_vertex));	// Tells the context (and by extension the VAO) how to read the second attribute of the vertex buffer.
 	glEnableVertexAttribArray(1);						// Enable the above vertex attribute array.
+
+	glVertexAttribPointer(2, floats_per_texture,
+		GL_FLOAT, GL_FALSE,
+		stride * sizeof(float),
+		(void*)(sizeof(float) * (floats_per_vertex + floats_per_normal))
+	);											// Tells the context (and by extension the VAO) how to read the second attribute of the vertex buffer.
+	glEnableVertexAttribArray(2);						// Enable the above vertex attribute array.
 
 	glBindVertexArray(0);								// Unbind the VAO from the context.
 
