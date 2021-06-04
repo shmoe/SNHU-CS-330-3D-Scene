@@ -387,7 +387,7 @@ Model get_orange_model(const char* texture_path) {
 
 				// calculate texture coordinates
 				to_push.s = (float)j / sector_count;
-				to_push.t = (float)i / stack_count;
+				to_push.t = 1.f - (float)i / stack_count;
 
 				vertices.push_back(to_push);
 			}
@@ -520,8 +520,8 @@ Model get_soda_model(const char* texture_path) {
 				to_push.nz = to_push.z * lengthInv;
 
 				// calculate texture coordinates
-				to_push.s = (float)j / sector_count;
-				to_push.t = (float)i / stack_count;
+				to_push.s = 1.f - (float)j / sector_count;
+				to_push.t = 1.f - (float)i / stack_count;
 
 				
 				vertices.push_back(to_push);
@@ -559,7 +559,7 @@ Model get_soda_model(const char* texture_path) {
 				if (i == 0) {
 					// set tex_coords
 					lid_middle.s = (float)j / sector_count;
-					lid_middle.t = 0.f;
+					lid_middle.t = 1.f;
 
 					// set normals
 					//TODO
@@ -572,7 +572,7 @@ Model get_soda_model(const char* texture_path) {
 				if (i == stack_count - 1) {
 					// set tex_coords
 					bottom_middle.s = (float)j / sector_count;
-					bottom_middle.t = 1.f;
+					bottom_middle.t = 0.f;
 
 					// set normals
 					//TODO
