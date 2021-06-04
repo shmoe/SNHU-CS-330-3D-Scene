@@ -131,7 +131,7 @@ int main(int argc, char* argv[]) {
 	Model desk = get_desk_model("data/wood.jpg");
 	Model console = get_switch_model("data/switch.jpg");
 	Model orange = get_orange_model("data/orange_800x800.jpg");
-	Model soda = get_soda_model("data/orange.jpg");
+	Model soda = get_soda_model("data/soda.jpg");
 	
 	/**
 	 * Main rendering loop

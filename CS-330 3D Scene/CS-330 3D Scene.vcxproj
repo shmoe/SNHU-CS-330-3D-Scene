@@ -165,6 +165,7 @@
   </ItemGroup>
   <ItemGroup>
     <Image Include="data\orange.jpg" />
+    <Image Include="data\soda.jpg" />
     <Image Include="data\switch.jpg" />
     <Image Include="data\wood.jpg" />
   </ItemGroup>
