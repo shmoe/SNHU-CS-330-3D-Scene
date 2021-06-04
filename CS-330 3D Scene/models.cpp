@@ -583,7 +583,7 @@ Model get_soda_model(const char* texture_path) {
 	 * Define orange model matrix
 	 */
 	glm::mat4 model = glm::mat4(1.0f);												// Initially set as identity matrix
-	model = glm::translate(model, glm::vec3(-.25f, 0.25f, 0.5f));
+	model = glm::translate(model, glm::vec3(-.25f, 0.18f, 0.5f));
 	model = glm::scale(model, glm::vec3(0.06f, 0.06f, 0.06f));
 	model = glm::rotate(model, glm::radians(90.f), glm::vec3(1.f, 0.f, 0.f));
 
