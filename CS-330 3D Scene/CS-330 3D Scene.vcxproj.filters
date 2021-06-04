@@ -68,5 +68,8 @@
     <Image Include="data\switch.jpg">
       <Filter>Resource Files\data</Filter>
     </Image>
+    <Image Include="data\orange.jpg">
+      <Filter>Resource Files\data</Filter>
+    </Image>
   </ItemGroup>
 </Project>
