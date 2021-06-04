@@ -431,6 +431,83 @@ Model get_orange_model(const char* texture_path) {
 	return orange;
 }
 
+Model get_soda_model(const char* texture_path) {
+	using namespace std;
+
+	Model soda;
+
+	/**
+	 * Generate vertices for soda can
+	 * Adapted from:
+	 *	http://www.songho.ca/opengl/gl_sphere.html
+	 */
+
+	vector<vertex> vertices;
+
+	// change these to change attributes of can
+	float inner_radius = 0.8f;
+	float outer_radius = 1.f;
+	int sector_count = 36;
+	int stack_count = 36;
+
+	{
+		struct vertex to_push;
+	}
+
+	/**
+	 * Populate vertex buffer with vertex data in order to be drawn by glDrawArray
+	 * Adapted from:
+	 *	http://www.songho.ca/opengl/gl_sphere.html
+	 *
+	 * k1---k1+1
+	 * |   / |
+	 * |  /	 |
+	 * k2---k2+1
+	 */
+	vector<vertex> VB;
+
+	{
+		int k1, k2;
+
+		/**
+		 * Iterate through stacks
+		 */
+		for (int i = 0; i < stack_count; ++i) {
+			k1 = i * (sector_count + 1);	// beginning of current stack
+			k2 = k1 + sector_count + 1;		// beginning of next stack
+
+			/**
+			 * Iterate through sectors of current stack
+			 */
+			for (int j = 0; j < sector_count; ++j, ++k1, ++k2) {
+				if (i != 0) {
+					VB.push_back(vertices.at(k1));
+					VB.push_back(vertices.at(k2));
+					VB.push_back(vertices.at(k1 + 1));
+				}
+
+				if (i != (stack_count - 1)) {
+					VB.push_back(vertices.at(k1 + 1));
+					VB.push_back(vertices.at(k2));
+					VB.push_back(vertices.at(k2 + 1));
+				}
+			}
+		}
+	}
+
+	/**
+	 * Define orange model matrix
+	 */
+	glm::mat4 model = glm::mat4(1.0f);												// Initially set as identity matrix
+	model = glm::translate(model, glm::vec3(-0.25f, 0.f, 0.5f));
+	model = glm::scale(model, glm::vec3(0.06f, 0.06f, 0.06f));
+
+
+	create_model(soda, VB, model, texture_path);
+
+	return soda;
+}
+
 void draw_model(Model model, glm::mat4 projection, glm::mat4 view) {
 	using namespace glob;
 
