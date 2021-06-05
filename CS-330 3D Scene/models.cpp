@@ -449,7 +449,7 @@ Model get_orange_model(const char* texture_path) {
 Model get_napkin_model(const char* texture_path) {
 	Model napkin;
 
-	vertex napkin_vertices[6] = {
+	const vertex napkin_vertices[6] = {
 		-1.0f, 0.0f, 1.0f, 0.f, 0.f, 0.f, 0.0f, 0.0f,	// Front left
 		-1.0f, 0.0f, -1.0f, 0.f, 0.f, 0.f, 0.0f, 1.0f,	// Back left, brown
 		1.0f, 0.0f, -1.0f, 0.f, 0.f, 0.f, 1.0f, 1.0f,	// Back right, brown
