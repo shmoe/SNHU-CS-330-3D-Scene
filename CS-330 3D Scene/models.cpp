@@ -11,6 +11,9 @@
 namespace glob {
 	Shader* universal_shader = nullptr;
 	unsigned int number_of_textures = 0;
+
+	const float ambient_strength = 0.5f;
+	const glm::vec3 ambient_color = glm::vec3(1.f, 1.f, 1.f);
 }
 
 struct vertex {
@@ -597,9 +600,9 @@ Model get_soda_model(const char* texture_path) {
 					vertices[k1].nx = vertices[k1].x;
 					vertices[k1].ny = vertices[k1].y;
 					vertices[k1].nz = vertices[k1].z;
-					vertices[k1+1].nx = vertices[k1+1].x;
-					vertices[k1+1].ny = vertices[k1+1].y;
-					vertices[k1+1].nz = vertices[k1+1].z;
+					vertices[k1 + 1].nx = vertices[k1 + 1].x;
+					vertices[k1 + 1].ny = vertices[k1 + 1].y;
+					vertices[k1 + 1].nz = vertices[k1 + 1].z;
 
 
 					VB.push_back(lid_middle);
@@ -661,6 +664,9 @@ void draw_model(Model model, glm::mat4 projection, glm::mat4 view, glm::vec3 lig
 
 	universal_shader->use();
 	universal_shader->setInt("texture", model.texture_offset);
+
+	universal_shader->setFloat("ambientStrength", ambient_strength);
+	universal_shader->setVec3("ambientColor", ambient_color);
 
 	universal_shader->setVec3("lightPos", lightPos);
 	universal_shader->setVec3("lightColor", lightColor);

@@ -4,6 +4,8 @@ in vec3 FragPos;
 in vec3 Normal;
 out vec4 FragColor;
 
+uniform float ambientStrength;
+uniform vec3 ambientColor;
 uniform vec3 lightPos;
 uniform vec3 lightColor;
 uniform sampler2D texture;
@@ -11,9 +13,7 @@ uniform sampler2D texture;
 void main()
 {
 	// calculate ambient lighting
-	float ambient_strength = 0.1;
-	vec3 ambient_color = vec3(1.0, 1.0, 1.0);			// assume ambient lighting to be white (typical)
-	vec3 ambient = ambient_color * ambient_strength;
+	vec3 ambient = ambientColor * ambientStrength;
 
 	// calculate diffuse lighting
 	vec3 norm = normalize(Normal);						// normalize Normal vector incase does not already
