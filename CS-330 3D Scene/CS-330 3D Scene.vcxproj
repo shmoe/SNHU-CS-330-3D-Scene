@@ -147,6 +147,7 @@
   <ItemGroup>
     <ClCompile Include="events.cpp" />
     <ClCompile Include="glad.c" />
+    <ClCompile Include="lights.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="models.cpp" />
   </ItemGroup>
