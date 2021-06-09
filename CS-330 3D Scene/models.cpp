@@ -500,9 +500,15 @@ Model get_soda_model(const char* texture_path) {
 	lid_middle.x = 0.f;
 	lid_middle.y = height;
 	lid_middle.z = 0.f;
+	lid_middle.nx = 0.f;
+	lid_middle.ny = height;
+	lid_middle.nz = 0.f;
 	bottom_middle.x = 0.f;
 	bottom_middle.y = 0.f;
 	bottom_middle.z = 0.f;
+	bottom_middle.nx = 0.f;
+	bottom_middle.ny = 0.f;
+	bottom_middle.nz = 0.f;
 
 	{
 		struct vertex to_push;
@@ -588,7 +594,13 @@ Model get_soda_model(const char* texture_path) {
 					lid_middle.t = 1.f;
 
 					// set normals
-					//TODO
+					vertices[k1].nx = vertices[k1].x;
+					vertices[k1].ny = vertices[k1].y;
+					vertices[k1].nz = vertices[k1].z;
+					vertices[k1+1].nx = vertices[k1+1].x;
+					vertices[k1+1].ny = vertices[k1+1].y;
+					vertices[k1+1].nz = vertices[k1+1].z;
+
 
 					VB.push_back(lid_middle);
 					VB.push_back(vertices.at(k1));
@@ -601,7 +613,12 @@ Model get_soda_model(const char* texture_path) {
 					bottom_middle.t = 0.f;
 
 					// set normals
-					//TODO
+					vertices[k2].nx = vertices[k2].x;
+					vertices[k2].ny = vertices[k2].y;
+					vertices[k2].nz = vertices[k2].z;
+					vertices[k2 + 1].nx = vertices[k2 + 1].x;
+					vertices[k2 + 1].ny = vertices[k2 + 1].y;
+					vertices[k2 + 1].nz = vertices[k2 + 1].z;
 
 					VB.push_back(bottom_middle);
 					VB.push_back(vertices.at(k2));
