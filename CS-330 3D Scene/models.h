@@ -12,6 +12,8 @@ struct tex_mesh {
 	unsigned int VAO;
 	unsigned int number_of_vertices;
 	glm::mat4 model;
+
+	float shine = 0.f;
 };
 typedef struct tex_mesh Model;
 
@@ -28,5 +30,5 @@ Model get_napkin_model(const char* texture_path);
 
 Model get_soda_model(const char* texture_path);
 
-void draw_model(Model model, glm::mat4 projection, glm::mat4 view, glm::vec3 lightPos, glm::vec3 lightColor);
+void draw_model(Model model, glm::mat4 projection, glm::mat4 view, glm::vec3 lightPos, glm::vec3 lightColor, glm::vec3 viewPos);
 #endif//__MODELS_H__

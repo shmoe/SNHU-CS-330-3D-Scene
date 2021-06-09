@@ -446,6 +446,8 @@ Model get_orange_model(const char* texture_path) {
 
 	create_model(orange, VB, model, texture_path);
 
+	orange.shine = 0.3f;
+
 	return orange;
 }
 
@@ -653,10 +655,12 @@ Model get_soda_model(const char* texture_path) {
 
  	create_model(soda, VB, model, texture_path);
 
+	soda.shine = 0.5f;
+
 	return soda;
 }
 
-void draw_model(Model model, glm::mat4 projection, glm::mat4 view, glm::vec3 lightPos, glm::vec3 lightColor) {
+void draw_model(Model model, glm::mat4 projection, glm::mat4 view, glm::vec3 lightPos, glm::vec3 lightColor, glm::vec3 viewPos) {
 	using namespace glob;
 
 	glActiveTexture(GL_TEXTURE0 + model.texture_offset);
@@ -671,6 +675,9 @@ void draw_model(Model model, glm::mat4 projection, glm::mat4 view, glm::vec3 lig
 	universal_shader->setVec3("lightPos", lightPos);
 	universal_shader->setVec3("lightColor", lightColor);
 	universal_shader->setMat3("normalModel", glm::mat3(glm::transpose(glm::inverse(model.model))));
+
+	universal_shader->setFloat("specularStrength", model.shine);
+	universal_shader->setVec3("viewPos", viewPos);
 
 	glBindVertexArray(model.VAO);
 	universal_shader->setMat4("projection", projection);

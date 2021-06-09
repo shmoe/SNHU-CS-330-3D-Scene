@@ -206,11 +206,11 @@ int main(int argc, char* argv[]) {
 		 */
 		draw_radiant_light(light, projection, view);							// Draw light source
 
-		draw_model(desk, projection, view, light.position, light.color);		// Draw desk Model
-		draw_model(console, projection, view, light.position, light.color);		// Draw console Model
-		draw_model(napkin, projection, view, light.position, light.color);		// Draw napkin Model
-		draw_model(orange, projection, view, light.position, light.color);		// Draw orange Model
-		draw_model(soda, projection, view, light.position, light.color);		// Draw soda can Model
+		draw_model(desk, projection, view, light.position, light.color, glob::cameraPos);		// Draw desk Model
+		draw_model(console, projection, view, light.position, light.color, glob::cameraPos);	// Draw console Model
+		draw_model(napkin, projection, view, light.position, light.color, glob::cameraPos);		// Draw napkin Model
+		draw_model(orange, projection, view, light.position, light.color, glob::cameraPos);		// Draw orange Model
+		draw_model(soda, projection, view, light.position, light.color, glob::cameraPos);		// Draw soda can Model
 
 
 		glfwSwapBuffers(window);				// Swaps front and back framebuffers (output to screen)
