@@ -28,7 +28,7 @@ RadiantLight get_point_light() {
 	const int floats_per_color = 3;
 	int stride = floats_per_vertex + floats_per_color;
 
-	glm::vec3 position = glm::vec3(point[0].x, point[0].y, point[0].z);
+	glm::vec3 position = glm::vec3(-1.f, 1.f, -1.f);					// top back left corner
 	glm::vec3 color = glm::vec3(point[0].r, point[0].g, point[0].b);
 
 	point_light.position = position;
@@ -65,7 +65,7 @@ RadiantLight get_point_light() {
 	point_light.VAO = VAO;
 
 	glm::mat4 model = glm::mat4(1.0f);
-	model = glm::translate(model, glm::vec3(-1.f, 1.f, -1.f)); // back left corner of scene;
+	model = glm::translate(model, position);
 	
 	point_light.model = model;
 
