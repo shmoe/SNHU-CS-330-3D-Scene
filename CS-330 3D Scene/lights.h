@@ -18,5 +18,5 @@ void lights_init();
 
 RadiantLight get_point_light();
 
-void draw_radiant_light(RadiantLight, glm::mat4 projection, glm::mat4 view);
+void draw_radiant_light(RadiantLight light, glm::mat4 projection, glm::mat4 view);
 #endif//__LIGHTS_H__
