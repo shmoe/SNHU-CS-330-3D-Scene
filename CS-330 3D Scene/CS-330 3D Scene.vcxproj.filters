@@ -60,6 +60,12 @@
     <None Include="shaders\single_texture.vs.glsl">
       <Filter>Resource Files\shaders</Filter>
     </None>
+    <None Include="radiant_light.fs.glsl">
+      <Filter>Resource Files\shaders</Filter>
+    </None>
+    <None Include="radiant_light.vs.glsl">
+      <Filter>Resource Files\shaders</Filter>
+    </None>
   </ItemGroup>
   <ItemGroup>
     <Image Include="data\wood.jpg">
