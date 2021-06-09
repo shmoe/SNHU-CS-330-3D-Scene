@@ -6,8 +6,12 @@ out vec4 FragColor;
 
 uniform float ambientStrength;
 uniform vec3 ambientColor;
+
 uniform vec3 lightPos;
 uniform vec3 lightColor;
+
+uniform float specularStrength;
+uniform vec3 viewPos;
 uniform sampler2D texture;
 
 void main()
@@ -25,7 +29,11 @@ void main()
 	vec3 diffuse = diff * lightColor;
 
 	// calculate specular lighting
-
+	vec3 viewDir = normalize(viewPos - FragPos);				// calculate view direction and normalize
+	vec3 reflectDir = reflect(-lightDir, norm);					// calculate direction of reflected light
+	float spec = pow(max(dot(viewDir, reflectDir), 0.0), 32);	// calculate specular constant
+	vec3 specular = specularStrength * spec * lightColor;
+	
 	// calculate fragment color
-	FragColor = vec4(ambient + diffuse, 1.0) * texture(texture, TexCoord);
+	FragColor = vec4(ambient + diffuse + specular, 1.0) * texture(texture, TexCoord);
 }
