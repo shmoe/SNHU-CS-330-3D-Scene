@@ -197,6 +197,8 @@ Model get_desk_model(const char* texture_path) {
 	plane.texture_offset = glob::number_of_textures - 1;											// Assign offset from GL_TEXTURE0 texture unit
 	plane.texture = plane_texture;																	// Assing handle to texture
 
+	plane.shine = 0.3f;
+
 	return plane;
 }
 
