@@ -21,9 +21,14 @@
 #include "main.h"
 
 /**
-* Contains callbacks for GLFW events.
-*/
+ * Contains callbacks for GLFW events.
+ */
 #include "events.h"
+
+/**
+ * Contains the "RadiantLight" class
+ */
+#include "lights.h"
 
 /**
  * Contains the "Model" class
@@ -31,8 +36,8 @@
 #include "models.h"
 
 /**
-* All global variables (primarily for the camera)
-*/
+ * All global variables (primarily for the camera)
+ */
 namespace glob {
 	glm::vec3 cameraPos = glm::vec3(0.0f, 0.0f, 3.0f);
 	glm::vec3 cameraFront = glm::vec3(0.0f, 0.0f, -1.0f);
@@ -121,6 +126,11 @@ int main(int argc, char* argv[]) {
 	glfwSetInputMode(window, GLFW_CURSOR, GLFW_CURSOR_DISABLED);
 
 	/**
+	 * Generate shaders for light sources after OpenGL and GLFW are intitialized.
+	 */
+	lights_init();
+
+	/**
 	 * Generate universal (single texture, MVP) shader after OpenGL and GLFW are intialized.
 	 */
 	models_init();
@@ -128,6 +138,8 @@ int main(int argc, char* argv[]) {
 	/**
 	 * Create models
 	 */
+	RadiantLight light = get_point_light();
+
 	Model desk = get_desk_model("data/wood.jpg");
 	Model console = get_switch_model("data/switch.jpg");
 	Model orange = get_orange_model("data/orange.jpg");
@@ -192,11 +204,13 @@ int main(int argc, char* argv[]) {
 		/**
 		 * Draw models
 		 */
-		draw_model(desk, projection, view);		// Draw desk Model
-		draw_model(console, projection, view);	// Draw console Model
-		draw_model(napkin, projection, view);	// Draw napkin Model
-		draw_model(orange, projection, view);	// Draw orange Model
-		draw_model(soda, projection, view);		// Draw soda can Model
+		draw_radiant_light(light, projection, view);							// Draw light source
+
+		draw_model(desk, projection, view, light.position, light.color);		// Draw desk Model
+		draw_model(console, projection, view, light.position, light.color);		// Draw console Model
+		draw_model(napkin, projection, view, light.position, light.color);		// Draw napkin Model
+		draw_model(orange, projection, view, light.position, light.color);		// Draw orange Model
+		draw_model(soda, projection, view, light.position, light.color);		// Draw soda can Model
 
 
 		glfwSwapBuffers(window);				// Swaps front and back framebuffers (output to screen)
