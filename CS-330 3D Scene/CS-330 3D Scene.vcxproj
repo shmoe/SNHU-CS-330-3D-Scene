@@ -162,8 +162,8 @@
   <ItemGroup>
     <None Include="OpenGL-GLFW-GLAD-glm-Headers.props" />
     <None Include="OpenGL-GLFW-GLAD-glm-Win32.props" />
-    <None Include="radiant_light.fs.glsl" />
-    <None Include="radiant_light.vs.glsl" />
+    <None Include="shaders\radiant_light.fs.glsl" />
+    <None Include="shaders\radiant_light.vs.glsl" />
     <None Include="shaders\single_texture.fs.glsl" />
     <None Include="shaders\single_texture.vs.glsl" />
   </ItemGroup>

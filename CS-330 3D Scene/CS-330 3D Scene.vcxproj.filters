@@ -66,10 +66,10 @@
     <None Include="shaders\single_texture.vs.glsl">
       <Filter>Resource Files\shaders</Filter>
     </None>
-    <None Include="radiant_light.fs.glsl">
+    <None Include="shaders\radiant_light.fs.glsl">
       <Filter>Resource Files\shaders</Filter>
     </None>
-    <None Include="radiant_light.vs.glsl">
+    <None Include="shaders\radiant_light.vs.glsl">
       <Filter>Resource Files\shaders</Filter>
     </None>
   </ItemGroup>
