@@ -152,6 +152,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="events.h" />
+    <ClInclude Include="lights.h" />
     <ClInclude Include="main.h" />
     <ClInclude Include="models.h" />
     <ClInclude Include="shader.h" />
