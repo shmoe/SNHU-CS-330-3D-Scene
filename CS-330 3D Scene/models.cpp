@@ -123,12 +123,12 @@ Model get_desk_model(const char* texture_path) {
 	 * Set up VAO and number of vertices
 	 */
 	const float plane_vertices[] = {
-	-1.0f, 0.0f, 1.0f,	0.f, 1.f, 0.f,	0.0f, 0.0f,	// Front left
-	-1.0f, 0.0f, -1.0f,	0.f, 1.f, 0.f,	0.0f, 1.0f,	// Back left, brown
-	1.0f, 0.0f, -1.0f,	0.f, 1.f, 0.f,	1.0f, 1.0f,	// Back right, brown
-	1.0f, 0.0f, -1.0f,	0.f, 1.f, 0.f,	1.0f, 1.0f,	// Back right, brown
-	-1.0f, 0.0f, 1.0f,	0.f, 1.f, 0.f,	0.0f, 0.0f,	// Front left, brown
-	1.0f, 0.0f, 1.0f,	0.f, 1.f, 0.f,	1.0f, 0.0f	// Front right, brown
+	-1.0f, 0.0f, 1.0f,	-1.f, 1.f, 1.f,		0.0f, 0.0f,	// Front left
+	-1.0f, 0.0f, -1.0f,	-1.f, 1.f, -1.f,	0.0f, 1.0f,	// Back left, brown
+	1.0f, 0.0f, -1.0f,	1.f, 1.f, -1.f,		1.0f, 1.0f,	// Back right, brown
+	1.0f, 0.0f, -1.0f,	1.f, 1.f, -1.f,		1.0f, 1.0f,	// Back right, brown
+	-1.0f, 0.0f, 1.0f,	-1.f, 1.f, 1.f,		0.0f, 0.0f,	// Front left, brown
+	1.0f, 0.0f, 1.0f,	1.f, 1.f, 1.f,		1.0f, 0.0f	// Front right, brown
 	};
 
 	const int floats_per_vertex = 3;
@@ -450,12 +450,12 @@ Model get_napkin_model(const char* texture_path) {
 	Model napkin;
 
 	const vertex napkin_vertices[6] = {
-		-1.0f, 0.0f, 1.0f,		0.f, 1.f, 0.f,		0.0f, 0.0f,	// Front left
-		-1.0f, 0.0f, -1.0f,		0.f, 1.f, 0.f,		0.0f, 1.0f,	// Back left
-		1.0f, 0.0f, -1.0f,		0.f, 1.f, 0.f,		1.0f, 1.0f,	// Back right
-		1.0f, 0.0f, -1.0f,		0.f, 1.f, 0.f,		1.0f, 1.0f,	// Back right
-		-1.0f, 0.0f, 1.0f,		0.f, 1.f, 0.f,		0.0f, 0.0f,	// Front left
-		1.0f, 0.0f, 1.0f,		0.f, 1.f, 0.f,		1.0f, 0.0f	// Front right
+		-1.0f, 0.0f, 1.0f,		-1.f, 1.f, 1.f,		0.0f, 0.0f,	// Front left
+		-1.0f, 0.0f, -1.0f,		-1.f, 1.f, -1.f,		0.0f, 1.0f,	// Back left
+		1.0f, 0.0f, -1.0f,		1.f, 1.f, -1.f,		1.0f, 1.0f,	// Back right
+		1.0f, 0.0f, -1.0f,		1.f, 1.f, -1.f,		1.0f, 1.0f,	// Back right
+		-1.0f, 0.0f, 1.0f,		-1.f, 1.f, 1.f,		0.0f, 0.0f,	// Front left
+		1.0f, 0.0f, 1.0f,		1.f, 1.f, 1.f,		1.0f, 0.0f	// Front right
 	};
 
 	std::vector<vertex> vertices(napkin_vertices, napkin_vertices + 6);	// fill vertices with above vector
