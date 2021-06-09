@@ -636,7 +636,7 @@ Model get_soda_model(const char* texture_path) {
 	return soda;
 }
 
-void draw_model(Model model, glm::mat4 projection, glm::mat4 view) {
+void draw_model(Model model, glm::mat4 projection, glm::mat4 view, glm::vec3 lightPos, glm::vec3 lightColor) {
 	using namespace glob;
 
 	glActiveTexture(GL_TEXTURE0 + model.texture_offset);
@@ -644,6 +644,9 @@ void draw_model(Model model, glm::mat4 projection, glm::mat4 view) {
 
 	universal_shader->use();
 	universal_shader->setInt("texture", model.texture_offset);
+
+	universal_shader->setVec3("lightPos", lightPos);
+	universal_shader->setVec3("lightColor", lightColor);
 
 	glBindVertexArray(model.VAO);
 	universal_shader->setMat4("projection", projection);
