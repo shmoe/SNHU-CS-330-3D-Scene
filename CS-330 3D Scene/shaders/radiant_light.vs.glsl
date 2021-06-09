@@ -10,5 +10,5 @@ uniform mat4 projection;															// Projection matrix (uniform input)
 void main()
 {
 	gl_Position = projection * view * model * vec4(aPos.x, aPos.y, aPos.z, 1.0);	// Map the input vec3 to a vec4 and set it to gl_Position. 
-	VertexColor = aVertexColor;
+	VertexColor = vec4(aVertexColor, 1.0);
 }
