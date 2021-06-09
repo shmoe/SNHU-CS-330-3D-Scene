@@ -647,6 +647,7 @@ void draw_model(Model model, glm::mat4 projection, glm::mat4 view, glm::vec3 lig
 
 	universal_shader->setVec3("lightPos", lightPos);
 	universal_shader->setVec3("lightColor", lightColor);
+	universal_shader->setMat3("normalModel", glm::mat3(glm::transpose(glm::inverse(model.model))));
 
 	glBindVertexArray(model.VAO);
 	universal_shader->setMat4("projection", projection);
