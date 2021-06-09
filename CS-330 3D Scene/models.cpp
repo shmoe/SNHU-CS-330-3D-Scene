@@ -123,12 +123,12 @@ Model get_desk_model(const char* texture_path) {
 	 * Set up VAO and number of vertices
 	 */
 	const float plane_vertices[] = {
-	-1.0f, 0.0f, 1.0f,	0.f, 0.f, 0.f,	0.0f, 0.0f,	// Front left
-	-1.0f, 0.0f, -1.0f,	0.f, 0.f, 0.f,	0.0f, 1.0f,	// Back left, brown
-	1.0f, 0.0f, -1.0f,	0.f, 0.f, 0.f,	1.0f, 1.0f,	// Back right, brown
-	1.0f, 0.0f, -1.0f,	0.f, 0.f, 0.f,	1.0f, 1.0f,	// Back right, brown
-	-1.0f, 0.0f, 1.0f,	0.f, 0.f, 0.f,	0.0f, 0.0f,	// Front left, brown
-	1.0f, 0.0f, 1.0f,	0.f, 0.f, 0.f,	1.0f, 0.0f	// Front right, brown
+	-1.0f, 0.0f, 1.0f,	0.f, 1.f, 0.f,	0.0f, 0.0f,	// Front left
+	-1.0f, 0.0f, -1.0f,	0.f, 1.f, 0.f,	0.0f, 1.0f,	// Back left, brown
+	1.0f, 0.0f, -1.0f,	0.f, 1.f, 0.f,	1.0f, 1.0f,	// Back right, brown
+	1.0f, 0.0f, -1.0f,	0.f, 1.f, 0.f,	1.0f, 1.0f,	// Back right, brown
+	-1.0f, 0.0f, 1.0f,	0.f, 1.f, 0.f,	0.0f, 0.0f,	// Front left, brown
+	1.0f, 0.0f, 1.0f,	0.f, 1.f, 0.f,	1.0f, 0.0f	// Front right, brown
 	};
 
 	const int floats_per_vertex = 3;
@@ -212,52 +212,52 @@ Model get_switch_model(const char* texture_path) {
 	 */
 	const float console_vertices[] = {
 		// front face
-		-0.5f, 0.5882f, 1.0f,	0.f, 0.f, 0.f,	front_face_offset, front_face_height,	// Front top left
-		0.5f, 0.5882f, 1.0f,	0.f, 0.f, 0.f,	1.f, front_face_height, 				// Front top right
-		0.5f, -0.5882f, 1.0f,	0.f, 0.f, 0.f,	1.f, 0.0f,								// Front bottom left
-		0.5f, -0.5882f, 1.0f,	0.f, 0.f, 0.f,	1.f, 0.0f,								// Front bottom left
-		-0.5f, 0.5882f, 1.0f,	0.f, 0.f, 0.f,	front_face_offset, front_face_height,	// Front top right
-		-0.5f, -0.5882f, 1.0f,	0.f, 0.f, 0.f,	front_face_offset, 0.f,					// Front bottom right
+		-0.5f, 0.5882f, 1.0f,	0.f, 0.f, 1.f,	front_face_offset, front_face_height,	// Front top left
+		0.5f, 0.5882f, 1.0f,	0.f, 0.f, 1.f,	1.f, front_face_height, 				// Front top right
+		0.5f, -0.5882f, 1.0f,	0.f, 0.f, 1.f,	1.f, 0.0f,								// Front bottom left
+		0.5f, -0.5882f, 1.0f,	0.f, 0.f, 1.f,	1.f, 0.0f,								// Front bottom left
+		-0.5f, 0.5882f, 1.0f,	0.f, 0.f, 1.f,	front_face_offset, front_face_height,	// Front top right
+		-0.5f, -0.5882f, 1.0f,	0.f, 0.f, 1.f,	front_face_offset, 0.f,					// Front bottom right
 
 		// right face
-		0.5f, 0.5882f, 1.0f,	0.f, 0.f, 0.f,	side_face_length, 1.f,					// Front top right
-		0.5f, 0.5882f, 0.93f,	0.f, 0.f, 0.f,	0.0f, 1.f,								// Back top right
-		0.5f, -0.5882f, 1.0f,	0.f, 0.f, 0.f,	0.0f, 0.0f,								// Front bottom left
-		0.5f, -0.5882f, 1.0f,	0.f, 0.f, 0.f,	0.0f, 0.0f,								// Front bottom left
-		0.5f, 0.5882f, 0.93f,	0.f, 0.f, 0.f,	0.0f, 1.f,								// Back top right
-		0.5f, -0.5882f, 0.93f,	0.f, 0.f, 0.f,	side_face_length, 0.0f,					// Back bottom left
+		0.5f, 0.5882f, 1.0f,	1.f, 0.f, 0.f,	side_face_length, 1.f,					// Front top right
+		0.5f, 0.5882f, 0.93f,	1.f, 0.f, 0.f,	0.0f, 1.f,								// Back top right
+		0.5f, -0.5882f, 1.0f,	1.f, 0.f, 0.f,	0.0f, 0.0f,								// Front bottom left
+		0.5f, -0.5882f, 1.0f,	1.f, 0.f, 0.f,	0.0f, 0.0f,								// Front bottom left
+		0.5f, 0.5882f, 0.93f,	1.f, 0.f, 0.f,	0.0f, 1.f,								// Back top right
+		0.5f, -0.5882f, 0.93f,	1.f, 0.f, 0.f,	side_face_length, 0.0f,					// Back bottom left
 
 		// back face
-		-0.5f, 0.5882f, 0.93f,	0.f, 0.f, 0.f,	front_face_offset, 1.f, 				// Back top left
-		0.5f, 0.5882f, 0.93f,	0.f, 0.f, 0.f,	0.f, 1.0f, 								// Back top right
-		-0.5f, -0.5882f, 0.93f,	0.f, 0.f, 0.f,	0.0f, 0.0f,								// Back bottom right
-		-0.5f, -0.5882f, 0.93f,	0.f, 0.f, 0.f,	0.0f, 0.0f,								// Back bottom right
-		0.5f, 0.5882f, 0.93f,	0.f, 0.f, 0.f,	0.0f, 1.0f,								// Back top right
-		0.5f, -0.5882f, 0.93f,	0.f, 0.f, 0.f,	front_face_offset, 0.0f,				// Back bottom left
+		-0.5f, 0.5882f, 0.93f,	0.f, 0.f, -1.f,	front_face_offset, 1.f, 				// Back top left
+		0.5f, 0.5882f, 0.93f,	0.f, 0.f, -1.f,	0.f, 1.0f, 								// Back top right
+		-0.5f, -0.5882f, 0.93f,	0.f, 0.f, -1.f,	0.0f, 0.0f,								// Back bottom right
+		-0.5f, -0.5882f, 0.93f,	0.f, 0.f, -1.f,	0.0f, 0.0f,								// Back bottom right
+		0.5f, 0.5882f, 0.93f,	0.f, 0.f, -1.f,	0.0f, 1.0f,								// Back top right
+		0.5f, -0.5882f, 0.93f,	0.f, 0.f, -1.f,	front_face_offset, 0.0f,				// Back bottom left
 
 		// left face
-		-0.5f, 0.5882f, 1.0f,	0.f, 0.f, 0.f,	side_face_length, 1.f,					// Front top left
-		-0.5f, 0.5882f, 0.93f,	0.f, 0.f, 0.f,	0.0f, 1.0f,								// Back top left
-		-0.5f, -0.5882f, 0.93f,	0.f, 0.f, 0.f,	0.0f, 0.0f,								// Back bottom right
-		-0.5f, -0.5882f, 0.93f,	0.f, 0.f, 0.f,	0.0f, 0.0f,								// Back bottom right
-		-0.5f, 0.5882f, 1.0f,	0.f, 0.f, 0.f,	0.0f, 1.0f,							 	// Front top left
-		-0.5f, -0.5882f, 1.0f,	0.f, 0.f, 0.f,	side_face_length, 0.0f,					// Front bottom right
+		-0.5f, 0.5882f, 1.0f,	-1.f, 0.f, 0.f,	side_face_length, 1.f,					// Front top left
+		-0.5f, 0.5882f, 0.93f,	-1.f, 0.f, 0.f,	0.0f, 1.0f,								// Back top left
+		-0.5f, -0.5882f, 0.93f,	-1.f, 0.f, 0.f,	0.0f, 0.0f,								// Back bottom right
+		-0.5f, -0.5882f, 0.93f,	-1.f, 0.f, 0.f,	0.0f, 0.0f,								// Back bottom right
+		-0.5f, 0.5882f, 1.0f,	-1.f, 0.f, 0.f,	0.0f, 1.0f,							 	// Front top left
+		-0.5f, -0.5882f, 1.0f,	-1.f, 0.f, 0.f,	side_face_length, 0.0f,					// Front bottom right
 
 		// bottom face
-		-0.5f, -0.5882f, 1.0f,	0.f, 0.f, 0.f,	side_face_length, 1.f,					// Front bottom right
-		0.5f, -0.5882f, 1.0f,	0.f, 0.f, 0.f,	0.0f, 1.0f,								// Front bottom left
-		-0.5f, -0.5882f, 0.93f,	0.f, 0.f, 0.f,	0.0f, 0.0f,								// Back bottom right
-		-0.5f, -0.5882f, 0.93f,	0.f, 0.f, 0.f,	0.0f, 0.0f,								// Back bottom right
-		0.5f, -0.5882f, 1.0f,	0.f, 0.f, 0.f,	0.0f, 1.0f,								// Front bottom left
-		0.5f, -0.5882f, 0.93f,	0.f, 0.f, 0.f,	side_face_length, 0.0f,				// Back bottom left
+		-0.5f, -0.5882f, 1.0f,	0.f, -1.f, 0.f,	side_face_length, 1.f,					// Front bottom right
+		0.5f, -0.5882f, 1.0f,	0.f, -1.f, 0.f,	0.0f, 1.0f,								// Front bottom left
+		-0.5f, -0.5882f, 0.93f,	0.f, -1.f, 0.f,	0.0f, 0.0f,								// Back bottom right
+		-0.5f, -0.5882f, 0.93f,	0.f, -1.f, 0.f,	0.0f, 0.0f,								// Back bottom right
+		0.5f, -0.5882f, 1.0f,	0.f, -1.f, 0.f,	0.0f, 1.0f,								// Front bottom left
+		0.5f, -0.5882f, 0.93f,	0.f, -1.f, 0.f,	side_face_length, 0.0f,				// Back bottom left
 
 		// top face
-		-0.5f, 0.5882f, 1.0f,	0.f, 0.f, 0.f,	side_face_length, 1.f,					// Front top left
-		-0.5f, 0.5882f, 0.93f,	0.f, 0.f, 0.f,	0.0f, 1.0f,								// Back top left
-		0.5f, 0.5882f, 0.93f,	0.f, 0.f, 0.f,	0.0f, 0.0f,								// Back top right
-		0.5f, 0.5882f, 0.93f,	0.f, 0.f, 0.f,	0.0f, 0.0f,								// Back top right
-		-0.5f, 0.5882f, 1.0f,	0.f, 0.f, 0.f,	0.0f, 1.0f,								// Front top left
-		0.5f, 0.5882f, 1.0f,	0.f, 0.f, 0.f,	side_face_length, 0.0f,				// Front top right
+		-0.5f, 0.5882f, 1.0f,	0.f, 1.f, 0.f,	side_face_length, 1.f,					// Front top left
+		-0.5f, 0.5882f, 0.93f,	0.f, 1.f, 0.f,	0.0f, 1.0f,								// Back top left
+		0.5f, 0.5882f, 0.93f,	0.f, 1.f, 0.f,	0.0f, 0.0f,								// Back top right
+		0.5f, 0.5882f, 0.93f,	0.f, 1.f, 0.f,	0.0f, 0.0f,								// Back top right
+		-0.5f, 0.5882f, 1.0f,	0.f, 1.f, 0.f,	0.0f, 1.0f,								// Front top left
+		0.5f, 0.5882f, 1.0f,	0.f, 1.f, 0.f,	side_face_length, 0.0f,				// Front top right
 
 		// stand
 		-0.5f + (14.0f / 17.0f), -0.5882f + (6.0f / 10.0f), 0.93f,	0.f, 0.f, 0.f,	front_face_offset, 1.f,		// Stand top left
@@ -450,12 +450,12 @@ Model get_napkin_model(const char* texture_path) {
 	Model napkin;
 
 	const vertex napkin_vertices[6] = {
-		-1.0f, 0.0f, 1.0f,		0.f, 0.f, 0.f,		0.0f, 0.0f,	// Front left
-		-1.0f, 0.0f, -1.0f,		0.f, 0.f, 0.f,		0.0f, 1.0f,	// Back left
-		1.0f, 0.0f, -1.0f,		0.f, 0.f, 0.f,		1.0f, 1.0f,	// Back right
-		1.0f, 0.0f, -1.0f,		0.f, 0.f, 0.f,		1.0f, 1.0f,	// Back right
-		-1.0f, 0.0f, 1.0f,		0.f, 0.f, 0.f,		0.0f, 0.0f,	// Front left
-		1.0f, 0.0f, 1.0f,		0.f, 0.f, 0.f,		1.0f, 0.0f	// Front right
+		-1.0f, 0.0f, 1.0f,		0.f, 1.f, 0.f,		0.0f, 0.0f,	// Front left
+		-1.0f, 0.0f, -1.0f,		0.f, 1.f, 0.f,		0.0f, 1.0f,	// Back left
+		1.0f, 0.0f, -1.0f,		0.f, 1.f, 0.f,		1.0f, 1.0f,	// Back right
+		1.0f, 0.0f, -1.0f,		0.f, 1.f, 0.f,		1.0f, 1.0f,	// Back right
+		-1.0f, 0.0f, 1.0f,		0.f, 1.f, 0.f,		0.0f, 0.0f,	// Front left
+		1.0f, 0.0f, 1.0f,		0.f, 1.f, 0.f,		1.0f, 0.0f	// Front right
 	};
 
 	std::vector<vertex> vertices(napkin_vertices, napkin_vertices + 6);	// fill vertices with above vector
