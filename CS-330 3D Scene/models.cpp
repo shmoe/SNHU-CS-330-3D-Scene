@@ -657,7 +657,7 @@ Model get_soda_model(const char* texture_path) {
 
  	create_model(soda, VB, model, texture_path);
 
-	soda.shine = 0.5f;
+	soda.shine = 1.f;
 
 	return soda;
 }
@@ -669,7 +669,7 @@ void draw_model(Model model, glm::mat4 projection, glm::mat4 view, glm::vec3 lig
 	glBindTexture(GL_TEXTURE_2D, model.texture);
 
 	universal_shader->use();
-	universal_shader->setInt("texture", model.texture_offset);
+	universal_shader->setInt("aTexture", model.texture_offset);
 
 	universal_shader->setFloat("ambientStrength", ambient_strength);
 	universal_shader->setVec3("ambientColor", ambient_color);

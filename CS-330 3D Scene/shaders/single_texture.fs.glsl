@@ -12,7 +12,7 @@ uniform vec3 lightColor;
 
 uniform float specularStrength;
 uniform vec3 viewPos;
-uniform sampler2D texture;
+uniform sampler2D aTexture;
 
 void main()
 {
@@ -35,5 +35,5 @@ void main()
 	vec3 specular = specularStrength * spec * lightColor;
 	
 	// calculate fragment color
-	FragColor = vec4(ambient + diffuse + specular, 1.0) * texture(texture, TexCoord);
+	FragColor = vec4(ambient + diffuse + specular, 1.0) * texture(aTexture, TexCoord);
 }
