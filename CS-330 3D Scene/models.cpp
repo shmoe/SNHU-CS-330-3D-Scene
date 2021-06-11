@@ -267,12 +267,12 @@ Model get_switch_model(const char* texture_path) {
 		0.5f, 0.5882f, 1.0f,	0.f, 1.f, 0.f,	side_face_length, 0.0f,				// Front top right
 
 		// stand
-		-0.5f + (14.0f / 17.0f), -0.5882f + (6.0f / 10.0f), 0.93f,	0.f, 0.f, 0.f,	front_face_offset, 1.f,		// Stand top left
-		-0.5f + (16.0f / 17.0f), -0.5882f + (6.0f / 10.0f), 0.93f,	0.f, 0.f, 0.f,	0.0f, 1.0f,					// Stand top right
-		-0.5f + (14.0f / 17.0f), -0.5f, 0.70f,						0.f, 0.f, 0.f,	0.0f, 0.0f,					// Stand bottom left
-		-0.5f + (14.0f / 17.0f), -0.5f, 0.70f,						0.f, 0.f, 0.f,	0.0f, 0.0f,					// Stand bottom left
-		-0.5f + (16.0f / 17.0f), -0.5882f + (6.0f / 10.0f), 0.93f,	0.f, 0.f, 0.f,	0.0f, 1.0f,					// Stand top right
-		-0.5f + (16.0f / 17.0f), -0.5f, 0.70f,						0.f, 0.f, 0.f,	front_face_offset, 0.0f		// Stand bottom right
+		-0.5f + (14.0f / 17.0f), -0.5882f + (6.0f / 10.0f), 0.93f,	0.f, 1.05f, -1.7f,	front_face_offset, 1.f,		// Stand top left
+		-0.5f + (16.0f / 17.0f), -0.5882f + (6.0f / 10.0f), 0.93f,	0.f, 1.05f, -1.7f,	0.0f, 1.0f,					// Stand top right
+		-0.5f + (14.0f / 17.0f), -0.5f, 0.70f,						0.f, 1.05f, -1.7f,	0.0f, 0.0f,					// Stand bottom left
+		-0.5f + (14.0f / 17.0f), -0.5f, 0.70f,						0.f, 1.05f, -1.7f,	0.0f, 0.0f,					// Stand bottom left
+		-0.5f + (16.0f / 17.0f), -0.5882f + (6.0f / 10.0f), 0.93f,	0.f, 1.05f, -1.7f,	0.0f, 1.0f,					// Stand top right
+		-0.5f + (16.0f / 17.0f), -0.5f, 0.70f,						0.f, 1.05f, -1.7f,	front_face_offset, 0.0f		// Stand bottom right
 	};
 
 	const int floats_per_vertex = 3;
@@ -516,13 +516,13 @@ Model get_soda_model(const char* texture_path) {
 	bottom_middle.y = 0.f;
 	bottom_middle.z = 0.f;
 	bottom_middle.nx = 0.f;
-	bottom_middle.ny = 0.f;
+	bottom_middle.ny = -1.f;
 	bottom_middle.nz = 0.f;
 
 	{
 		struct vertex to_push;
 
-		float lengthInv = 1.f / radius;				// warning: definitely wrong, lengthInv should change per stack case
+		float lengthInv = 1.f / radius;				// multiply x,y,z by this to normalize a vertex vector
 
 		float sector_step = 2 * PI / sector_count;
 		float sector_angle;							// theta
@@ -544,22 +544,36 @@ Model get_soda_model(const char* texture_path) {
 					float bevel_radius = radius + (bevel_width * ((float) i / stacks_per_bevel));
 					to_push.x = bevel_radius * cosf(sector_angle);
 					to_push.z = bevel_radius * sinf(sector_angle);
+
+					lengthInv = 1.f / bevel_radius;
 				}										// case: upper bevel
 				else if (i < stack_count - stacks_per_bevel) {
 					to_push.x = (radius + bevel_width) * cosf(sector_angle);
 					to_push.z = (radius + bevel_width) * sinf(sector_angle);
+
+					lengthInv = 1.f / radius;
 				}										// case: body
 				else {
 					float bevel_radius = radius + (bevel_width * ((float) (stack_count-i)  / (stacks_per_bevel)));
 					to_push.x = bevel_radius * cosf(sector_angle);
 					to_push.z = bevel_radius * sinf(sector_angle);
+
+					lengthInv = 1.f / bevel_radius;
 				}										// case: lower bevel
 
+				glm::vec3 vert = glm::vec3(to_push.x, to_push.y, to_push.z);
+				glm::vec3 origin = glm::vec3(0.f, to_push.y, 0.f);
+				glm::vec3 norm = vert - origin;
+
+				to_push.nx = norm.x * lengthInv;
+				to_push.ny = norm.y * lengthInv;
+				to_push.nz = norm.z * lengthInv;
+/*
 				// calculate normal: the vector orthonormal to the vertex (for lighting and physics)
 				to_push.nx = to_push.x * lengthInv;
 				to_push.ny = to_push.y * lengthInv;
 				to_push.nz = to_push.z * lengthInv;
-
+*/
 				// calculate texture coordinates
 				to_push.s = 1.f - (float)j / sector_count;
 				to_push.t = 1.f - (float)i / stack_count;
