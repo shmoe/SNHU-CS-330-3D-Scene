@@ -36,6 +36,9 @@
     <ClCompile Include="lights.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="utils.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="events.h">
@@ -54,6 +57,9 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="lights.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="utils.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
@@ -79,6 +85,9 @@
       <Filter>Resource Files\shaders</Filter>
     </None>
     <None Include="shaders\draw_normals.fs.glsl">
+      <Filter>Resource Files\shaders</Filter>
+    </None>
+    <None Include="shaders\material_single_texture.fs.glsl">
       <Filter>Resource Files\shaders</Filter>
     </None>
   </ItemGroup>
