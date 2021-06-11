@@ -72,6 +72,15 @@
     <None Include="shaders\radiant_light.vs.glsl">
       <Filter>Resource Files\shaders</Filter>
     </None>
+    <None Include="shaders\draw_normals.vs.glsl">
+      <Filter>Resource Files\shaders</Filter>
+    </None>
+    <None Include="shaders\draw_normals.gs.glsl">
+      <Filter>Resource Files\shaders</Filter>
+    </None>
+    <None Include="shaders\draw_normals.fs.glsl">
+      <Filter>Resource Files\shaders</Filter>
+    </None>
   </ItemGroup>
   <ItemGroup>
     <Image Include="data\wood.jpg">

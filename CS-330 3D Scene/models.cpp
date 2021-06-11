@@ -10,6 +10,7 @@
 
 namespace glob {
 	Shader* universal_shader = nullptr;
+	Shader* normals_shader = nullptr;
 	unsigned int number_of_textures = 0;
 
 	const float ambient_strength = 0.5f;
@@ -24,6 +25,7 @@ struct vertex {
 
 void models_init() {
 	glob::universal_shader = new Shader("shaders/single_texture.vs.glsl", "shaders/single_texture.fs.glsl");
+	glob::normals_shader = new Shader("shaders/draw_normals.vs.glsl", "shaders/draw_normals.fs.glsl", "shaders/draw_normals.gs.glsl");
 }
 
 unsigned int load_wrap_texture(const char* texture_path) {
@@ -685,6 +687,22 @@ void draw_model(Model model, glm::mat4 projection, glm::mat4 view, glm::vec3 lig
 	universal_shader->setMat4("projection", projection);
 	universal_shader->setMat4("view", view);
 	universal_shader->setMat4("model", model.model);
+
+	glDrawArrays(GL_TRIANGLES, 0, model.number_of_vertices);
+}
+
+void draw_normals(Model model, glm::mat4 projection, glm::mat4 view) {
+	using namespace glob;
+
+	glActiveTexture(GL_TEXTURE0 + model.texture_offset);
+	glBindTexture(GL_TEXTURE_2D, model.texture);
+
+	normals_shader->use();
+
+	glBindVertexArray(model.VAO);
+	normals_shader->setMat4("projection", projection);
+	normals_shader->setMat4("view", view);
+	normals_shader->setMat4("model", model.model);
 
 	glDrawArrays(GL_TRIANGLES, 0, model.number_of_vertices);
 }
