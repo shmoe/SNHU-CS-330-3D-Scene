@@ -501,9 +501,9 @@ Model get_soda_model(const char* texture_path) {
 	float radius = 1.f;
 	float bevel_width = 0.2;
 	float height = 4.f;
-	int stacks_per_bevel = 3;
-	int sector_count = 12;
-	int stack_count = 36;
+	int stacks_per_bevel = 3 * 3;
+	int sector_count = 36;
+	int stack_count = 36 * 3;
 
 	// assing positions to center points for lid and bottom
 	lid_middle.x = 0.f;
