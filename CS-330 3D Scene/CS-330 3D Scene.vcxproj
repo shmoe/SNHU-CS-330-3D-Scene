@@ -177,6 +177,7 @@
     <Image Include="data\orange.jpg" />
     <Image Include="data\soda.jpg" />
     <Image Include="data\switch.jpg" />
+    <Image Include="data\switch_specular_map.jpg" />
     <Image Include="data\wood.jpg" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
