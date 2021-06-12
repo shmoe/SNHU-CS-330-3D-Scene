@@ -9,6 +9,7 @@ uniform vec3 ambientColor;
 
 uniform vec3 lightPos;
 uniform vec3 lightColor;
+uniform vec3 attenCoeff = vec3(1.0, 0.0, 0.0);
 
 uniform sampler2D specularMap;
 uniform float specularStrength;
@@ -17,6 +18,10 @@ uniform sampler2D aTexture;
 
 void main()
 {
+	// calculate attenuation coefficient based on distance from light
+	float lightDistance = length(lightPos - FragPos);
+	float attenuation = 1.0 / (attenCoeff.x + attenCoeff.y * lightDistance + attenCoeff.z * (lightDistance * lightDistance));
+
 	// calculate ambient lighting
 	vec3 ambient = ambientColor * ambientStrength;
 
@@ -34,6 +39,10 @@ void main()
 	vec3 reflectDir = reflect(-lightDir, norm);					// calculate direction of reflected light
 	float spec = pow(max(dot(viewDir, reflectDir), 0.0), 32);	// calculate specular constant
 	vec3 specular = specularStrength * spec * lightColor * vec3(texture(specularMap, TexCoord));
+
+	// adjust for attenuation
+	diffuse *= attenuation;
+	specular *= attenuation;
 
 	// calculate fragment color
 	FragColor = vec4(ambient + diffuse + specular, 1.0) * texture(aTexture, TexCoord);

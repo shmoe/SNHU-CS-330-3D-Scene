@@ -11,6 +11,8 @@ struct radiant_light_mesh {
 	glm::mat4 model;
 	glm::vec3 position;
 	glm::vec3 color;
+
+	glm::vec3 attenuation_coefficients;
 };
 typedef struct radiant_light_mesh RadiantLight;
 
