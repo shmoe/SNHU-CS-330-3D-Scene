@@ -21,6 +21,11 @@
 #include "main.h"
 
 /**
+ * Contains "load_wrap_texture()"
+ */
+#include "utils.h"
+
+/**
  * Contains callbacks for GLFW events.
  */
 #include "events.h"
@@ -145,6 +150,10 @@ int main(int argc, char* argv[]) {
 	Model orange = get_orange_model("data/orange.jpg");
 	Model napkin = get_napkin_model("data/napkin.jpg");
 	Model soda = get_soda_model("data/soda.jpg");
+
+	Material console_mat;
+	console_mat.specular_map = load_wrap_texture("data/switch_specular_map.jpg");
+	console_mat.shine = 1.0f;
 	
 	/**
 	 * Main rendering loop
@@ -207,7 +216,7 @@ int main(int argc, char* argv[]) {
 		draw_radiant_light(light, projection, view);							// Draw light source
 
 		draw_model(desk, projection, view, light.position, light.color, glob::cameraPos);		// Draw desk Model
-		draw_model(console, projection, view, light.position, light.color, glob::cameraPos);	// Draw console Model
+		draw_material_model(console, console_mat, projection, view, light.position, light.color, glob::cameraPos);	// Draw console Model
 		draw_model(napkin, projection, view, light.position, light.color, glob::cameraPos);		// Draw napkin Model
 		draw_model(orange, projection, view, light.position, light.color, glob::cameraPos);		// Draw orange Model
 		draw_model(soda, projection, view, light.position, light.color, glob::cameraPos);		// Draw soda can Model

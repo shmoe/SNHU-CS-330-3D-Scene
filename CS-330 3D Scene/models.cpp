@@ -1,7 +1,5 @@
 #include <glad/glad.h>
 #include <glm/gtc/matrix_transform.hpp>
-#define STB_IMAGE_IMPLEMENTATION
-#include "stb_image.h"
 
 #include <vector>
 #define PI 3.141596
@@ -28,7 +26,7 @@ struct vertex {
 
 void models_init() {
 	glob::universal_shader = new Shader("shaders/single_texture.vs.glsl", "shaders/single_texture.fs.glsl");
-	glob::material_shader = new Shader("shaders/single_texture.vs.glsl", "shaders/material_single_texture.vs.glsl");
+	glob::material_shader = new Shader("shaders/single_texture.vs.glsl", "shaders/material_single_texture.fs.glsl");
 	glob::normals_shader = new Shader("shaders/draw_normals.vs.glsl", "shaders/draw_normals.fs.glsl", "shaders/draw_normals.gs.glsl");
 }
 
@@ -657,11 +655,11 @@ Model get_soda_model(const char* texture_path) {
 void draw_model(Model model, glm::mat4 projection, glm::mat4 view, glm::vec3 lightPos, glm::vec3 lightColor, glm::vec3 viewPos) {
 	using namespace glob;
 
-	glActiveTexture(GL_TEXTURE0 + model.texture_offset);
+	glActiveTexture(GL_TEXTURE0);
 	glBindTexture(GL_TEXTURE_2D, model.texture);
 
 	universal_shader->use();
-	universal_shader->setInt("aTexture", model.texture_offset);
+	universal_shader->setInt("aTexture", 0);
 
 	universal_shader->setFloat("ambientStrength", ambient_strength);
 	universal_shader->setVec3("ambientColor", ambient_color);
@@ -686,9 +684,9 @@ void draw_material_model(Model model, Material mat, glm::mat4 projection, glm::m
 
 	material_shader->use();
 
-	glActiveTexture(GL_TEXTURE0 + model.texture_offset);
+	glActiveTexture(GL_TEXTURE0);
 	glBindTexture(GL_TEXTURE_2D, model.texture);
-	material_shader->setInt("aTexture", model.texture_offset);
+	material_shader->setInt("aTexture", 0);
 
 	material_shader->setFloat("ambientStrength", ambient_strength);
 	material_shader->setVec3("ambientColor", ambient_color);
@@ -697,9 +695,9 @@ void draw_material_model(Model model, Material mat, glm::mat4 projection, glm::m
 	material_shader->setVec3("lightColor", lightColor);
 	material_shader->setMat3("normalModel", glm::mat3(glm::transpose(glm::inverse(model.model))));
 
-	glActiveTexture(GL_TEXTURE0 + mat.map_offset);
+	glActiveTexture(GL_TEXTURE1);
 	glBindTexture(GL_TEXTURE_2D, mat.specular_map);
-	material_shader->setInt("specularMap", mat.specular_map);
+	material_shader->setInt("specularMap", 1);
 	material_shader->setFloat("specularStrength", mat.shine);
 	material_shader->setVec3("viewPos", viewPos);
 

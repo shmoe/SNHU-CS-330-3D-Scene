@@ -19,7 +19,6 @@ typedef struct tex_mesh Model;
 
 struct material {
 	unsigned int specular_map;
-	unsigned int map_offset;
 	float shine = 0.f;
 };
 typedef struct material Material;
@@ -38,7 +37,7 @@ Model get_soda_model(const char* texture_path);
 
 void draw_model(Model model, glm::mat4 projection, glm::mat4 view, glm::vec3 lightPos, glm::vec3 lightColor, glm::vec3 viewPos);
 
-void draw_material_model(Model model, Material mat, glm::mat4 projection, glm::mat4 view, glm::vec3 lightPos, glm::vec3 lightColor, glm::vec3 viewPos)
+void draw_material_model(Model model, Material mat, glm::mat4 projection, glm::mat4 view, glm::vec3 lightPos, glm::vec3 lightColor, glm::vec3 viewPos);
 
 void draw_normals(Model model, glm::mat4 projection, glm::mat4 view);
 #endif//__MODELS_H__

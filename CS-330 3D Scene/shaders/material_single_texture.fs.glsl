@@ -28,13 +28,13 @@ void main()
 	float diff = max(dot(norm, lightDir), 0.0);			// calculate how bright the fragment should be based
 															// on the angle between the normal and ray of light
 	vec3 diffuse = diff * lightColor;
-
+	
 	// calculate specular lighting
 	vec3 viewDir = normalize(viewPos - FragPos);				// calculate view direction and normalize
 	vec3 reflectDir = reflect(-lightDir, norm);					// calculate direction of reflected light
 	float spec = pow(max(dot(viewDir, reflectDir), 0.0), 32);	// calculate specular constant
-	vec3 specular = specularStrength * spec * vec3(texture(specularMap, TexCoord);
-	
+	vec3 specular = specularStrength * spec * lightColor * vec3(texture(specularMap, TexCoord));
+
 	// calculate fragment color
 	FragColor = vec4(ambient + diffuse + specular, 1.0) * texture(aTexture, TexCoord);
 }
