@@ -107,5 +107,8 @@
     <Image Include="data\switch_specular_map.jpg">
       <Filter>Resource Files\data</Filter>
     </Image>
+    <Image Include="data\napkin.jpg">
+      <Filter>Resource Files\data</Filter>
+    </Image>
   </ItemGroup>
 </Project>

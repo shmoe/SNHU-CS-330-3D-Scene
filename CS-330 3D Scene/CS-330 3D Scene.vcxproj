@@ -174,6 +174,7 @@
     <None Include="shaders\single_texture.vs.glsl" />
   </ItemGroup>
   <ItemGroup>
+    <Image Include="data\napkin.jpg" />
     <Image Include="data\orange.jpg" />
     <Image Include="data\soda.jpg" />
     <Image Include="data\switch.jpg" />
