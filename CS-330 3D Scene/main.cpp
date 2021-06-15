@@ -144,6 +144,9 @@ int main(int argc, char* argv[]) {
 	 * Create models
 	 */
 	RadiantLight light = get_point_light();
+	RadiantLight light2 = light;
+	light2.color = glm::vec3(1.f, 1.f, 0.f);
+	light2.position = glm::vec3(-1.f, 2.f, -1.f);
 
 	Model desk = get_desk_model("data/wood.jpg");
 	Model console = get_switch_model("data/switch.jpg");
@@ -213,13 +216,13 @@ int main(int argc, char* argv[]) {
 		/**
 		 * Draw models
 		 */
-		draw_radiant_light(light, projection, view);																// Draw light source
+		draw_radiant_light(light, projection, view);											// Draw light source
 
-		draw_model(desk, projection, view, light, glob::cameraPos);							// Draw desk Model
+		draw_model(desk, projection, view, light, glob::cameraPos);								// Draw desk Model
 		draw_material_model(console, console_mat, projection, view, light, glob::cameraPos);	// Draw console Model
 		draw_model(napkin, projection, view, light, glob::cameraPos);							// Draw napkin Model
 		draw_model(orange, projection, view, light, glob::cameraPos);							// Draw orange Model
-		draw_model(soda, projection, view, light, glob::cameraPos);							// Draw soda can Model
+		draw_model(soda, projection, view, light, glob::cameraPos);								// Draw soda can Model
 
 
 		glfwSwapBuffers(window);				// Swaps front and back framebuffers (output to screen)

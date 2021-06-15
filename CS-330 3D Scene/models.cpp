@@ -654,7 +654,7 @@ Model get_soda_model(const char* texture_path) {
 	return soda;
 }
 
-void draw_model(Model model, glm::mat4 projection, glm::mat4 view, RadiantLight light, glm::vec3 viewPos) {
+void draw_model(Model model, glm::mat4 projection, glm::mat4 view, RadiantLight light1, RadiantLight light2, glm::vec3 viewPos) {
 	using namespace glob;
 
 	glActiveTexture(GL_TEXTURE0);
@@ -666,9 +666,11 @@ void draw_model(Model model, glm::mat4 projection, glm::mat4 view, RadiantLight 
 	universal_shader->setFloat("ambientStrength", ambient_strength);
 	universal_shader->setVec3("ambientColor", ambient_color);
 
-	universal_shader->setVec3("lightPos", light.position);
-	universal_shader->setVec3("lightColor", light.color);
-	universal_shader->setVec3("attenCoeff", light.attenuation_coefficients);
+	universal_shader->setVec3("lightPos1", light1.position);
+	universal_shader->setVec3("lightColor1", light1.color);
+	universal_shader->setVec3("lightPos2", light2.position);
+	universal_shader->setVec3("lightColor2", light2.color);
+	universal_shader->setVec3("attenCoeff", light1.attenuation_coefficients);
 	universal_shader->setMat3("normalModel", glm::mat3(glm::transpose(glm::inverse(model.model))));
 
 	universal_shader->setFloat("specularStrength", model.shine);
@@ -682,7 +684,7 @@ void draw_model(Model model, glm::mat4 projection, glm::mat4 view, RadiantLight 
 	glDrawArrays(GL_TRIANGLES, 0, model.number_of_vertices);
 }
 
-void draw_material_model(Model model, Material mat, glm::mat4 projection, glm::mat4 view, RadiantLight light, glm::vec3 viewPos) {
+void draw_material_model(Model model, Material mat, glm::mat4 projection, glm::mat4 view, RadiantLight light1, RadiantLight light2, glm::vec3 viewPos) {
 	using namespace glob;
 
 	material_shader->use();
@@ -694,8 +696,10 @@ void draw_material_model(Model model, Material mat, glm::mat4 projection, glm::m
 	material_shader->setFloat("ambientStrength", ambient_strength);
 	material_shader->setVec3("ambientColor", ambient_color);
 
-	universal_shader->setVec3("lightPos", light.position);
-	universal_shader->setVec3("lightColor", light.color);
+	universal_shader->setVec3("lightPos1", light1.position);
+	universal_shader->setVec3("lightColor1", light1.color);
+	universal_shader->setVec3("lightPos2", light2.position);
+	universal_shader->setVec3("lightColor2", light2.color);
 	universal_shader->setVec3("attenCoeff", light.attenuation_coefficients);
 	material_shader->setMat3("normalModel", glm::mat3(glm::transpose(glm::inverse(model.model))));
 
