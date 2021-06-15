@@ -28,10 +28,9 @@ RadiantLight get_point_light() {
 	const int floats_per_color = 3;
 	int stride = floats_per_vertex + floats_per_color;
 
-//	glm::vec3 position = glm::vec3(-1.f, 2.f, -1.f);					// top back left corner
 	glm::vec3 position = glm::vec3(-1.f, 0.5f, 1.f);
 	glm::vec3 color = glm::vec3(point[0].r, point[0].g, point[0].b);
-	glm::vec3 attenuation = glm::vec3(1.f, 0.22f, 0.20f);
+	glm::vec3 attenuation = glm::vec3(1.f, 0.045f, 0.0075f);
 
 	point_light.position = position;
 	point_light.color = color;
