@@ -700,7 +700,7 @@ void draw_material_model(Model model, Material mat, glm::mat4 projection, glm::m
 	universal_shader->setVec3("lightColor1", light1.color);
 	universal_shader->setVec3("lightPos2", light2.position);
 	universal_shader->setVec3("lightColor2", light2.color);
-	universal_shader->setVec3("attenCoeff", light.attenuation_coefficients);
+	universal_shader->setVec3("attenCoeff", light1.attenuation_coefficients);
 	material_shader->setMat3("normalModel", glm::mat3(glm::transpose(glm::inverse(model.model))));
 
 	glActiveTexture(GL_TEXTURE1);
