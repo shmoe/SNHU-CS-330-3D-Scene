@@ -696,11 +696,11 @@ void draw_material_model(Model model, Material mat, glm::mat4 projection, glm::m
 	material_shader->setFloat("ambientStrength", ambient_strength);
 	material_shader->setVec3("ambientColor", ambient_color);
 
-	universal_shader->setVec3("pointLight.position", point_light.position);
-	universal_shader->setVec3("pointLight.color", point_light.color);
-	universal_shader->setVec3("dirLight.direction", dir_light.direction);
-	universal_shader->setVec3("dirLight.color", dir_light.color);
-	universal_shader->setVec3("attenCoeff", point_light.attenuation_coefficients);
+	material_shader->setVec3("pointLight.position", point_light.position);
+	material_shader->setVec3("pointLight.color", point_light.color);
+	material_shader->setVec3("dirLight.direction", dir_light.direction);
+	material_shader->setVec3("dirLight.color", dir_light.color);
+	material_shader->setVec3("attenCoeff", point_light.attenuation_coefficients);
 	material_shader->setMat3("normalModel", glm::mat3(glm::transpose(glm::inverse(model.model))));
 
 	glActiveTexture(GL_TEXTURE1);
