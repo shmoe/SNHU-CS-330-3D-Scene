@@ -394,6 +394,13 @@ void processInput(GLFWwindow* window)
 	if (i_pressed && glfwGetKey(window, GLFW_KEY_I) == GLFW_RELEASE)
 		i_pressed = false;										// Set i_pressed to false
 
+	if (!i_pressed && glfwGetKey(window, GLFW_KEY_I) == GLFW_PRESS) {
+		glob::dirLightColor = (glob::dirLightColor+1) % 4;	// Cycle through the directional light colors
+		i_pressed = true;									// Set i_pressed to true
+	}																			// When "O" is pressed toggle wireframe mode On or Off
+	if (i_pressed && glfwGetKey(window, GLFW_KEY_I) == GLFW_RELEASE)
+		i_pressed = false;								// Set i_pressed to false
+
 
 	if (glfwGetKey(window, GLFW_KEY_LEFT_SHIFT) == GLFW_PRESS ||
 		glfwGetKey(window, GLFW_KEY_RIGHT_SHIFT) == GLFW_PRESS)
