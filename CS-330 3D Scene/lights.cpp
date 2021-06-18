@@ -79,7 +79,7 @@ DirectionalLight get_directional_light() {
 
 	dir_light.direction = glm::vec3(0.f, 0.f, 1.f);	// towards the default camera angle
 
-	dir_light.color = glm::vec3(0.f, 0.f, 0.f);		// sunlight
+	dir_light.color = glm::vec3(1.f, 1.f, 1.f);		// sunlight
 
 	return dir_light;
 }
