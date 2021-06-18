@@ -63,6 +63,7 @@ namespace glob {
 	bool orthographic = false;
 	bool wireframe = false;
 	bool zoom = false;
+	int dirLightColor = 0;
 }
 
 /**
@@ -212,6 +213,24 @@ int main(int argc, char* argv[]) {
 			glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
 
 		/**
+		 * Set color of directional light
+		 */
+		switch (glob::dirLightColor) {
+		case 0:
+			light2.color = glm::vec3(1.f, 1.f, 1.f);
+			break;										// case 0: white light
+		case 1:
+			light2.color = glm::vec3(1.f, 0.f, 0.f);
+			break;										// case 1: red light
+		case 2:
+			light2.color = glm::vec3(0.f, 1.f, 0.f);
+			break;										// case 2: green light
+		case 3:
+			light2.color = glm::vec3(0.f, 0.f, 1.f);
+			break;										// case 3: blue light
+		}
+
+		/**
 		 * Draw models
 		 */
 		draw_radiant_light(light, projection, view);													// Draw light source
@@ -348,6 +367,7 @@ void processInput(GLFWwindow* window)
 {
 	static bool p_pressed = false;
 	static bool o_pressed = false;
+	static bool i_pressed = false;
 
 	using namespace glob;														// This method accesses and modifies global variables
 	if (glfwGetKey(window, GLFW_KEY_ESCAPE) == GLFW_PRESS)
@@ -366,6 +386,13 @@ void processInput(GLFWwindow* window)
 	}																			// When "O" is pressed toggle wireframe mode On or Off
 	if (o_pressed && glfwGetKey(window, GLFW_KEY_O) == GLFW_RELEASE)
 		o_pressed = false;								// Set o_pressed to false
+
+	if (!i_pressed && glfwGetKey(window, GLFW_KEY_I) == GLFW_PRESS) {
+		glob::dirLightColor = (glob::dirLightColor+1) % 4;	// Cycle through the directional light colors
+		i_pressed = true;									// Set i_pressed to true
+	}																			// When "O" is pressed toggle wireframe mode On or Off
+	if (i_pressed && glfwGetKey(window, GLFW_KEY_I) == GLFW_RELEASE)
+		i_pressed = false;								// Set i_pressed to false
 
 
 	if (glfwGetKey(window, GLFW_KEY_LEFT_SHIFT) == GLFW_PRESS ||
