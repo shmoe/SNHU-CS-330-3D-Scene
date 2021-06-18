@@ -144,9 +144,7 @@ int main(int argc, char* argv[]) {
 	 * Create models
 	 */
 	RadiantLight light = get_point_light();
-	RadiantLight light2 = light;
-	light2.color = glm::vec3(1.f, 1.f, 0.f);
-	light2.position = glm::vec3(-1.f, 2.f, -1.f);
+	DirectionalLight light2 = get_directional_light();
 
 	Model desk = get_desk_model("data/wood.jpg");
 	Model console = get_switch_model("data/switch.jpg");
