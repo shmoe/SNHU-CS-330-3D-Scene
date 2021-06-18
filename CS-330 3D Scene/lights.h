@@ -16,9 +16,17 @@ struct radiant_light_mesh {
 };
 typedef struct radiant_light_mesh RadiantLight;
 
+struct directional_light_mesh {
+	glm::vec3 direction;
+	glm::vec3 color;
+};
+typedef struct directional_light_mesh DirectionalLight;
+
 void lights_init();
 
 RadiantLight get_point_light();
+
+DirectionalLight get_directional_light();
 
 void draw_radiant_light(RadiantLight light, glm::mat4 projection, glm::mat4 view);
 #endif//__LIGHTS_H__

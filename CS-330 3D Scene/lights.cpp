@@ -74,6 +74,16 @@ RadiantLight get_point_light() {
 	return point_light;
 };
 
+DirectionalLight get_directional_light() {
+	DirectionalLight dir_light;
+
+	dir_light.direction = glm::vec3(0.f, 0.f, 1.f);	// towards the default camera angle
+
+	dir_light.color = glm::vec3(0.f, 0.f, 0.f);		// sunlight
+
+	return dir_light;
+}
+
 void draw_radiant_light(RadiantLight light, glm::mat4 projection, glm::mat4 view) {
 	using namespace glob;
 
