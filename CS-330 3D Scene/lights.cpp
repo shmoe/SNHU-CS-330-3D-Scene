@@ -22,7 +22,7 @@ RadiantLight get_point_light() {
 
 	vertex point[1] = {
 		0.f, 0.f, 0.f,
-		212.f / 255.f,  235.f /255.f, 255.f / 255.f
+		0.831f,  0.921f, 1.f
 	};
 	const int floats_per_vertex = 3;
 	const int floats_per_color = 3;

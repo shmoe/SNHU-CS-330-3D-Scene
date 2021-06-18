@@ -63,6 +63,7 @@ namespace glob {
 	bool orthographic = false;
 	bool wireframe = false;
 	bool zoom = false;
+	int pointLightColor = 0;
 }
 
 /**
@@ -212,6 +213,24 @@ int main(int argc, char* argv[]) {
 			glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
 
 		/**
+		 * Set color of point light
+		 */
+		switch (glob::pointLightColor) {
+		case 0:
+			light.color = glm::vec3(0.831f, 0.921f, 1.f);
+			break;										// case 0: fluorescent light
+		case 1:
+			light.color = glm::vec3(1.f, 0.f, 0.f);
+			break;										// case 1: red light
+		case 2:
+			light.color = glm::vec3(0.f, 1.f, 0.f);
+			break;										// case 2: green light
+		case 3:
+			light.color = glm::vec3(0.f, 0.f, 1.f);
+			break;										// case 3: blue light
+		}
+
+		/**
 		 * Draw models
 		 */
 		draw_radiant_light(light, projection, view);													// Draw light source
@@ -348,24 +367,32 @@ void processInput(GLFWwindow* window)
 {
 	static bool p_pressed = false;
 	static bool o_pressed = false;
+	static bool i_pressed = false;
 
 	using namespace glob;														// This method accesses and modifies global variables
 	if (glfwGetKey(window, GLFW_KEY_ESCAPE) == GLFW_PRESS)
 		glfwSetWindowShouldClose(window, true);									// When "ESC" is pressed, set the flag that tells main()'s render loop to exit
 	
 	if (!p_pressed && glfwGetKey(window, GLFW_KEY_P) == GLFW_PRESS) {
-		glob::orthographic ^= true;						// Toggle value of orthographic
-		p_pressed = true;								// Set p_pressed to true
+		glob::orthographic ^= true;								// Toggle value of orthographic
+		p_pressed = true;										// Set p_pressed to true
 	}																			// When "P" is pressed toggle between perspective and orthographic projection
 	if (p_pressed && glfwGetKey(window, GLFW_KEY_P) == GLFW_RELEASE)
-		p_pressed = false;								// Set p_pressed to false
+		p_pressed = false;										// Set p_pressed to false
 
 	if (!o_pressed && glfwGetKey(window, GLFW_KEY_O) == GLFW_PRESS) {
-		glob::wireframe ^= true;						// Toggle value of wireframe
-		o_pressed = true;								// Set o_pressed to true
+		glob::wireframe ^= true;								// Toggle value of wireframe
+		o_pressed = true;										// Set o_pressed to true
 	}																			// When "O" is pressed toggle wireframe mode On or Off
 	if (o_pressed && glfwGetKey(window, GLFW_KEY_O) == GLFW_RELEASE)
-		o_pressed = false;								// Set o_pressed to false
+		o_pressed = false;										// Set o_pressed to false
+
+	if (!i_pressed && glfwGetKey(window, GLFW_KEY_I) == GLFW_PRESS) {
+		glob::pointLightColor = (glob::pointLightColor+1) % 4;	// Cycle through the directional light colors
+		i_pressed = true;										// Set i_pressed to true
+	}																			// When "O" is pressed toggle wireframe mode On or Off
+	if (i_pressed && glfwGetKey(window, GLFW_KEY_I) == GLFW_RELEASE)
+		i_pressed = false;										// Set i_pressed to false
 
 
 	if (glfwGetKey(window, GLFW_KEY_LEFT_SHIFT) == GLFW_PRESS ||
