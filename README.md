@@ -20,8 +20,11 @@
 
 ## Screenshots
 
-![3D Scene Demo 1](img/3D\ Scene\ Demo\ 1.png)
+### Basic Scene
+![3D Scene Demo 1](img/3D%20Scene%20Demo%201.png)
 
-![3D Scene Demo 2](img/3D\ Scene\ Demo\ 2.png)
+### Wireframe Mode
+![3D Scene Demo 2](img/3D%20Scene%20Demo%202.png)
 
-![3D Scene Demo 3](img/3D\ Scene\ Demo\ 3.png)
+### Red Point Light
+![3D Scene Demo 3](img/3D%20Scene%20Demo%203.png)
