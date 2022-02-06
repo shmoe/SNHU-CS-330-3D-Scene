@@ -19,3 +19,9 @@
 **I** - Cycle through point light colors
 
 ## Screenshots
+
+![3D Scene Demo 1](img/3D\ Scene\ Demo\ 1.png)
+
+![3D Scene Demo 2](img/3D\ Scene\ Demo\ 2.png)
+
+![3D Scene Demo 3](img/3D\ Scene\ Demo\ 3.png)
