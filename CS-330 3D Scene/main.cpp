@@ -273,7 +273,7 @@ GLFWwindow* create_glfw_window() {
 	 * Tell GLFW to create a window with the above configuration. If window
 	 * creation fails, log to stderr and terminate.
 	 */
-	GLFWwindow* window = glfwCreateWindow(GLFW_WINDOW_WIDTH, GLFW_WINDOW_HEIGHT, "Hellow Window", NULL, NULL);	// Create GLFW window
+	GLFWwindow* window = glfwCreateWindow(GLFW_WINDOW_WIDTH, GLFW_WINDOW_HEIGHT, "3D Scene", NULL, NULL);	// Create GLFW window
 	if (window == NULL) {
 		std::cerr << "Failed to create GLFW window" << std::endl;		// Log failure to stderr
 		glfwTerminate();												// Safely terminate GLFW
